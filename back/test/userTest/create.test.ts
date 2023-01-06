@@ -1,67 +1,71 @@
-import { describe, expect, it, afterAll } from "vitest"
-import chaiHttp from "chai-http";
 import chai from "chai";
+import chaiHttp from "chai-http";
+import { randomUUID } from "crypto";
+import { afterAll, describe, expect, it } from "vitest";
 import { server } from "../../server";
-import { User } from "../../src/types/user/user.type";
-import { randomBytes, randomUUID } from "crypto";
-import test from "node:test";
-import { connection } from "../../src/mariaDb/database";
-const agent = chai.use(chaiHttp)
-const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImUxZDIxN2U5LTQ1NjQtNGYyNC1hNTMzLTkzNmRiYTU4ZmRjOCIsInVzZXJOYW1lIjoidGVzdCIsImlhdCI6MTY3MjQ4NDU2MywiZXhwIjoyNjcyNDg0NTYzLCJqdGkiOiI5ZWU3ODM1NC0xYTI0LTQ0ZjItYTE4MC05NzZmN2FjNTUwYzIifQ.WoOF5Mzs47SFvcYKENKREcJhdD28hzbFB1wlI4qywk0`
-const credentials = { userName: "test", password: "test" }
-const getToken = async (credentials: any) => {
-  const request = chai.request(server)
-  const { body, status, error } = await request.post(`/users/connection`).send({ credentials })
-  return {
-    body, status, error, token: body.token
-  }
-}
+import { transaction } from "../../src/mariaDb/database";
+import { createUserData } from "../fixtures/user";
+import { createNewUser } from "../helpers/user";
+chai.use(chaiHttp);
 
-const userFactory = ({ id, creationDate, editionDate, email, lastConnection, password, salt, userName }: Partial<User>): User => {
-  return {
-    id: id ?? randomUUID(),
-    creationDate: creationDate ?? new Date(),
-    editionDate: editionDate ?? new Date(),
-    email: email ?? "test@test.com",
-    lastConnection: lastConnection ?? new Date(),
-    password: password ?? "test",
-    salt: salt ?? randomBytes(75).toString("hex"),
-    userName: userName ?? "test"
-  }
-}
-const userId = randomUUID()
-describe("USER SUITE", () => {
+describe.only("USER SUITE", () => {
   afterAll(async () => {
-    await connection.transaction(async tsx => await tsx.raw("DELETE FROM users"))
-  })
+    await transaction(async (tsx) => await tsx.raw("DELETE FROM users"));
+    server.close();
+  });
   it("Should create new user", async () => {
-    const request = chai.request(server)
+    const request = chai.request(server);
     try {
       const { body, status, error } = await request.post("/users").send({
         data: {
           password: "test",
+          passwordConfirmation: "test",
           userName: "test",
-          email: "test@test.com"
-        }
-      })
-      expect(body).to.have.property("message").eql("User added")
-      expect(status).to.be.eql(200)
+          email: "test@test.com",
+        },
+      });
+      expect(body).to.have.property("message").eql("User added");
+      expect(status).to.be.eql(200);
     } catch (error) {
-      console.log({ 'Vi test error': error });
-      throw error
-    };
-  });
-  it("Should log user", async () => {
-    const request = chai.request(server)
-    try {
-      const { body, token } = await getToken(credentials)
-      expect(body).to.have.property("token")
-      expect(body).to.have.property("message").eql("User logged")
-      expect(body).to.have.property("error").eql(false)
-    } catch (error) {
-      console.log({ "VI TEST ERROR": error });
-      throw error
-
+      console.log({ "Vi test error": error });
+      throw error;
     }
-  })
+  });
+  it("Should throw an error for empty userName", async () => {
+    const request = chai.request(server);
+
+    try {
+      const { body, status, error } = await createNewUser({
+        data: {
+          ...createUserData,
+          userName: "",
+        },
+      });
+      expect(body)
+        .to.have.property("message")
+        .eql("The field userName is empty");
+      expect(status).to.be.eql(500);
+    } catch (error) {
+      console.log({ "Vi test error": error });
+      throw error;
+    }
+    request.close();
+  });
+  it("Should throw an error for missing user name", async () => {
+    const { userName, ...data } = createUserData;
+    const request = chai.request(server);
+    try {
+      const { body, status, error } = await createNewUser({
+        data: { ...data },
+      });
+      expect(body)
+        .to.have.property("message")
+        .eql("The field userName is empty");
+      expect(status).to.be.eql(500);
+    } catch (error) {
+      console.log({ "Vi test error": error });
+      throw error;
+    }
+    request.close();
+  });
 });
