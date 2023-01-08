@@ -1,19 +1,20 @@
-import chai from "chai";
+import chai, { expect } from "chai";
 import chaiHttp from "chai-http";
 import { randomUUID } from "crypto";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { server } from "../../server";
 import { connection, transaction } from "../../src/mariaDb/database";
 import { boardIds, fakeBoards } from "../fixtures/board";
 import { createUserData } from "../fixtures/user";
 import { getToken } from "../helpers/globals";
 import { createNewUser } from "../helpers/user";
+
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
 
 const userId = randomUUID();
-describe("BOARD SUITE GET ALL", () => {
-  beforeAll(async () => {
+export default describe("BOARD SUITE GET ONE", () => {
+  //server.close();
+  before(async () => {
     const { body, status, error } = await createNewUser({
       data: { ...createUserData },
     });
@@ -22,13 +23,12 @@ describe("BOARD SUITE GET ALL", () => {
       await t.table("boards").insert([...fakeBoards(token.decoded.id)]);
     });
   });
-  afterAll(async () => {
+  after(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
-    server.close();
   });
-  it("Should get all boards", async () => {
+  it("Should get one boards", async () => {
     const { token } = await getToken(credentials);
     const request = chai.request(server);
     try {
@@ -45,4 +45,5 @@ describe("BOARD SUITE GET ALL", () => {
     }
     request.close();
   });
+  //server.close();
 });

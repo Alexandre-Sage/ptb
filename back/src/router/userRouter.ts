@@ -1,14 +1,7 @@
 import express, { Request, Response } from "express";
 import { decodeToken } from "../modules/auth/jsonWebToken";
-import { CustomError } from "../modules/errors/customError";
-import { composeHigherOrderAsync } from "../modules/higherOrder/compose";
-import {
-  joiErrorHandling,
-  joiValidationPartialApplication,
-} from "../modules/validation/joiHigherOrder";
+import { joiErrorHandling } from "../modules/validation/joiHigherOrder";
 import { UserService } from "../services/userService";
-import { User } from "../types/user/user.type";
-import { userJoiValidationSchema } from "../validationSchema/user";
 
 export class UserRouter {
   private readonly router = express.Router();
@@ -28,6 +21,7 @@ export class UserRouter {
           message: "User added",
         });
       } catch (error: any) {
+        console.log(error);
         error = joiErrorHandling(error);
         res.status(error.httpStatus ?? 500).json({
           error: true,

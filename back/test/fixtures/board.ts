@@ -25,7 +25,12 @@ const boardFactory = ({
   userId: userId ?? randomUUID(),
 });
 const { objectToDbRow } = BoardMapper();
-const boardIds = [randomUUID(), randomUUID(), randomUUID(), randomUUID()];
+const boardIds = [
+  randomUUID(),
+  "9927ec50-1ea1-4960-b2b8-b7b348349541",
+  randomUUID(),
+  randomUUID(),
+];
 const fakeBoards = (userId: UserId) =>
   boardIds.map((id) =>
     objectToDbRow(

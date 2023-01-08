@@ -1,15 +1,13 @@
-import chai from "chai";
+import chai, { expect } from "chai";
 import chaiHttp from "chai-http";
-import { randomUUID } from "crypto";
-import { afterAll, describe, expect, it } from "vitest";
 import { server } from "../../server";
 import { transaction } from "../../src/mariaDb/database";
 import { createUserData } from "../fixtures/user";
 import { createNewUser } from "../helpers/user";
 chai.use(chaiHttp);
 
-describe.only("USER SUITE", () => {
-  afterAll(async () => {
+export default describe("USER SUITE", () => {
+  after(async () => {
     await transaction(async (tsx) => await tsx.raw("DELETE FROM users"));
     server.close();
   });
@@ -49,7 +47,7 @@ describe.only("USER SUITE", () => {
       console.log({ "Vi test error": error });
       throw error;
     }
-    request.close();
+    // request.close();
   });
   it("Should throw an error for missing user name", async () => {
     const { userName, ...data } = createUserData;
@@ -66,6 +64,7 @@ describe.only("USER SUITE", () => {
       console.log({ "Vi test error": error });
       throw error;
     }
-    request.close();
+    // request.close();
   });
+  // server.close();
 });

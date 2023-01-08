@@ -3,45 +3,40 @@ import chaiHttp from "chai-http";
 import { randomUUID } from "crypto";
 import { server } from "../../server";
 import { connection, transaction } from "../../src/mariaDb/database";
-import { fakeBoards } from "../fixtures/board";
-import { createUserData } from "../fixtures/user";
+import { boardIds } from "../fixtures/board";
+import { fakeStories, initForStory } from "../fixtures/story";
 import { getToken } from "../helpers/globals";
-import { createNewUser } from "../helpers/user";
 
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
-
 const userId = randomUUID();
-export default describe("BOARD SUITE GET ALL", () => {
+export default describe("STORY SUITE", function () {
   before(async () => {
-    const { body, status, error } = await createNewUser({
-      data: { ...createUserData },
-    });
-    const { token } = await getToken(credentials);
-    await transaction(async (t) => {
-      await t.table("boards").insert([...fakeBoards(token.decoded.id)]);
-    });
+    const { token, decoded } = await initForStory();
+    await transaction(async (transaction) =>
+      transaction
+        .table("stories")
+        .insert([...fakeStories(boardIds[1], decoded.id)])
+    );
   });
   after(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
-    server.close();
   });
-  it("Should get all boards", async () => {
+  it("Should create story", async () => {
     const { token } = await getToken(credentials);
     const request = chai.request(server);
     try {
       const { body, status } = await request
-        .get("/boards")
+        .get("/stories")
         .set("Authorization", `Bearer ${token.token}`);
-      expect(body).to.have.property("boards");
+
       expect(status).eql(200);
+      expect(body).to.have.property("stories");
     } catch (error) {
       console.log({ "VI TEST ERROR": error });
       throw error;
     }
-    request.close();
   });
-  server.close();
 });

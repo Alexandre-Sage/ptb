@@ -47,16 +47,14 @@ export const Repository = <ObjectType, DbRowType, CustomMethods = {}>({
   const create = async (data: ObjectType) => {
     const row = objectToDbRow(data);
     return transaction(async (transaction) => {
-      return transaction
-        .table(table)
-        .insert({ ...row })
-        .returning("*");
+      return transaction.table(table).insert({ ...row });
     }) as ObjectType;
   };
   const getById = async (id: string): Promise<ObjectType> => {
     const row = (await transaction(async (transaction) => {
-      return transaction.table(table).select().where({ id }).first();
+      return transaction.table(table).select("*").where({ id: id }).first();
     })) as DbRowType;
+    console.log({ row });
     return dbRowToObject(row);
   };
   const getAll = async (userId: UserId): Promise<ObjectType[]> => {

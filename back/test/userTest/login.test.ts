@@ -1,8 +1,7 @@
-import chai from "chai";
+import chai, { expect } from "chai";
 import chaiHttp from "chai-http";
 import { randomUUID } from "crypto";
 import jwt from "jsonwebtoken";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { server } from "../../server";
 import { connection } from "../../src/mariaDb/database";
 import { jwtPayload } from "../../src/modules/auth/jsonWebToken";
@@ -24,8 +23,8 @@ const getToken = async (credentials: any, request: ChaiHttp.Agent) => {
 };
 
 const userId = randomUUID();
-describe("USER SUITE", () => {
-  beforeAll(async () => {
+export default describe("USER SUITE", () => {
+  before(async () => {
     const request = chai.request(server);
 
     const { body, status, error } = await createNewUser({
@@ -33,7 +32,7 @@ describe("USER SUITE", () => {
     });
     request.close();
   });
-  afterAll(async () => {
+  after(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
@@ -63,13 +62,14 @@ describe("USER SUITE", () => {
         .request(server)
         .get(`/users/${decoded.id}`)
         .set("Authorization", `Bearer ${token}`);
-      expect(body).toHaveProperty("user");
+      expect(body).to.have.property("user");
       expect(body).to.have.property("error").to.eql(false);
-      expect(status).toEqual(200);
+      expect(status).to.be.eql(200);
     } catch (error) {
       console.log({ "VI TEST ERROR": error });
       throw error;
     }
     request.close();
   });
+  server.close();
 });

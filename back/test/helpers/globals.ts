@@ -1,8 +1,10 @@
 import { jwtPayload } from "../../src/modules/auth/jsonWebToken";
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
-import { server } from "../../server";
+// import { server } from "../../server";
 import chaiHttp from "chai-http";
 import chai from "chai";
+
+import { server } from "../../server";
 
 chai.use(chaiHttp);
 
@@ -13,6 +15,7 @@ const getToken = async (credentials: any) => {
     .post(`/users/connection`)
     .send({ credentials });
   request.close();
+  server.close();
   return {
     body,
     status,

@@ -2,59 +2,54 @@ import chai, { expect } from "chai";
 import chaiHttp from "chai-http";
 import { randomUUID } from "crypto";
 import { server } from "../../server";
-import { connection } from "../../src/mariaDb/database";
-import { createUserData } from "../fixtures/user";
-import { createNewUser } from "../helpers/user";
-
+import { connection, transaction } from "../../src/mariaDb/database";
+import { boardIds } from "../fixtures/board";
+import { initForStory } from "../fixtures/story";
+import { getToken } from "../helpers/globals";
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
-const getToken = async (credentials: any, request: ChaiHttp.Agent) => {
-  // const request = chai.request(server);
-  const { body, status, error } = await request
-    .post(`/users/connection`)
-    .send({ credentials });
-  request.close();
-  return {
-    body,
-    status,
-    error,
-    token: body.token,
-  };
-};
-
 const userId = randomUUID();
-export default describe("CREATE BOARD SUITE", () => {
+export default describe("STORY SUITE", () => {
   before(async () => {
-    const { body, status, error } = await createNewUser({
-      data: { ...createUserData },
-    });
+    await initForStory();
   });
   after(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
-    server.close();
   });
-  it("create new board", async () => {
-    const { token } = await getToken(credentials, chai.request(server));
+  it("Should create story", async () => {
+    const { token } = await getToken(credentials);
     const request = chai.request(server);
     try {
       const { body, status } = await request
-        .post("/boards")
+        .post("/stories")
         .send({
-          board: {
-            boardName: "test board",
-            description: "description test ",
+          story: {
+            storyName: "test story",
+            description: "description test",
+            boardId: boardIds[2],
           },
         })
-        .set("Authorization", `Bearer ${token}`);
+        .set("Authorization", `Bearer ${token.token}`);
       expect(body).to.have.property("error").eql(false);
       expect(status).eql(201);
+      const story = await transaction(async (tsx) => {
+        return await tsx
+          .table("stories")
+          .select("*")
+          .where({ board_id: boardIds[2] })
+          .first();
+      });
+      expect(story).to.have.property("story_name").to.be.eql("test story");
+      expect(story)
+        .to.have.property("description")
+        .to.be.eql("description test");
+      expect(story).to.have.property("board_id").eql(boardIds[2]);
     } catch (error) {
       console.log({ "VI TEST ERROR": error });
       throw error;
     }
-    request.close();
   });
   //it("Should log and get user profil info", async () => {
   //  const request = chai.request(server);
@@ -64,7 +59,7 @@ export default describe("CREATE BOARD SUITE", () => {
   //      token,
   //      `${process.env.TOKEN_SECRET}`
   //    ) as jwtPayload;
-  //    const { body, status } = await chai
+  //    const { body, status } = await chai,{expect}
   //      .request(server)
   //      .get(`/users/${decoded.id}`)
   //      .set("Authorization", `Bearer ${token}`);

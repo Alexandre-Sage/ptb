@@ -1,27 +1,11 @@
 import { Repository } from "../mariaDb/repositories/repository";
-import {
-  composeHigherOrderAsync,
-  composeHigherOrderMultiType,
-  composeHigherOrderMutliTypeAsync,
-} from "../modules/higherOrder/compose";
+import { composeHigherOrderAsync } from "../modules/higherOrder/compose";
 import { Board, BoardId, BoardRow } from "../types/taskBoard/board.type";
 
-import Joi from "joi";
-import { joiValidationPartialApplication } from "../modules/validation/joiHigherOrder";
 import { randomUUID } from "crypto";
+import { joiValidationPartialApplication } from "../modules/validation/joiHigherOrder";
 import { UserId } from "../types/user/user.type";
-
-export const boardJoiValidationSchema = Joi.object<Board>({
-  id: Joi.string().required(),
-  userId: Joi.string().required(),
-  boardName: Joi.string().min(2).required(),
-  finished: Joi.boolean().required(),
-  finishedDate: Joi.not(),
-  lastUpdate: Joi.date().required(),
-  creationDate: Joi.date().required(),
-  editionDate: Joi.date().required(),
-  description: Joi.string().required(),
-});
+import { boardJoiValidationSchema } from "../validationSchema/board";
 
 export class BoardService {
   constructor(private readonly repository: Repository<Board, BoardRow>) {

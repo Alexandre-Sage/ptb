@@ -1,19 +1,19 @@
-import chai from "chai";
+import chai, { expect } from "chai";
 import chaiHttp from "chai-http";
 import { randomUUID } from "crypto";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { server } from "../../server";
 import { connection, transaction } from "../../src/mariaDb/database";
 import { boardFactory, boardIds, fakeBoards } from "../fixtures/board";
 import { createUserData } from "../fixtures/user";
 import { getToken } from "../helpers/globals";
+import { server } from "../../server";
 import { createNewUser } from "../helpers/user";
+
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
 
 const userId = randomUUID();
-describe("BOARD SUITE GET ALL", function () {
-  beforeAll(async () => {
+export default describe("BOARD SUITE UPDATE", function () {
+  before(async () => {
     const { body, status, error } = await createNewUser({
       data: { ...createUserData },
     });
@@ -23,13 +23,12 @@ describe("BOARD SUITE GET ALL", function () {
       await t.table("boards").insert([...boards]);
     });
   });
-  afterAll(async () => {
+  after(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
-    server.close();
   });
-  it("Should get all boards", async () => {
+  it("Should update a board", async () => {
     const { token } = await getToken(credentials);
     try {
       const request = chai.request(server);
@@ -53,7 +52,6 @@ describe("BOARD SUITE GET ALL", function () {
       expect(boardBody.board)
         .to.have.property("boardName")
         .eql("updated board");
-      console.log(boardBody);
       requestT.close();
     } catch (error) {
       console.log({ "VI TEST ERROR": error });
