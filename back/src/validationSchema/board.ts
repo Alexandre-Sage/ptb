@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { Board } from "../types/taskBoard/board.type";
+import { Board } from "../types/board/board.type";
 
 export const boardJoiValidationSchema = Joi.object<Board>({
   id: Joi.string().required(),

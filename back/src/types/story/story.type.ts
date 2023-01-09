@@ -1,4 +1,4 @@
-import { BoardId } from "../taskBoard/board.type";
+import { BoardId } from "../board/board.type";
 import { UserId } from "../user/user.type";
 
 type StoryId = string;

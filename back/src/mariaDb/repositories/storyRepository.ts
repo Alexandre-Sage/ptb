@@ -1,5 +1,5 @@
 import { Story, StoryRow } from "../../types/story/story.type";
-import { BoardId } from "../../types/taskBoard/board.type";
+import { BoardId } from "../../types/board/board.type";
 import { connection, transaction } from "../database";
 import { StoryMapper } from "../mappers/storyMapper";
 import { Repository } from "./repository";

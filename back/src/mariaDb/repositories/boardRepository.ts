@@ -1,7 +1,7 @@
-import { Board, BoardRow } from "../../types/taskBoard/board.type";
+import { Board, BoardRow } from "../../types/board/board.type";
 import { connection, databaseTransaction, transaction } from "../database";
 import { BoardMapper } from "../mappers/boardMapper";
-import { UserMapper } from "../mappers/user/userMapper";
+import { UserMapper } from "../mappers/userMapper";
 import { RepositoryParams, Repository } from "./repository";
 
 export interface BoardCustomMethods {}

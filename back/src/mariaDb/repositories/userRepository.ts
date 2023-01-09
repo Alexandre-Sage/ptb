@@ -1,6 +1,6 @@
 import { User, UserRow } from "../../types/user/user.type";
 import { connection, databaseTransaction, transaction } from "../database";
-import { UserMapper } from "../mappers/user/userMapper";
+import { UserMapper } from "../mappers/userMapper";
 import { RepositoryParams, Repository } from "./repository";
 
 export interface UserCustomMethods {

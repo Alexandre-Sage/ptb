@@ -2,7 +2,7 @@ import { randomUUID } from "crypto";
 import { transaction } from "../../src/mariaDb/database";
 import { StoryMapper } from "../../src/mariaDb/mappers/storyMapper";
 import { Story } from "../../src/types/story/story.type";
-import { BoardId } from "../../src/types/taskBoard/board.type";
+import { BoardId } from "../../src/types/board/board.type";
 import { UserId } from "../../src/types/user/user.type";
 import { getToken, credentials } from "../helpers/globals";
 import { createNewUser } from "../helpers/user";

@@ -6,7 +6,7 @@ import {
   composeHigherOrderMutliTypeAsync,
 } from "../modules/higherOrder/compose";
 import { BoardService } from "../services/boardService";
-import { Board } from "../types/taskBoard/board.type";
+import { Board } from "../types/board/board.type";
 
 export class BoardRouter {
   private readonly router = express.Router();

@@ -14,6 +14,9 @@ import { boardRepository } from "./src/mariaDb/repositories/boardRepository";
 import { storyRepository } from "./src/mariaDb/repositories/storyRepository";
 import { StoryRouter } from "./src/router/storyRouter";
 import { StoryService } from "./src/services/storyService";
+import { TaskService } from "./src/services/taskService";
+import { taskRepository } from "./src/mariaDb/repositories/taskRepository";
+import { TaskRouter } from "./src/router/taskRouter";
 const serverInstance = express();
 serverInstance.use(bodyParser.json());
 serverInstance.use(
@@ -25,12 +28,15 @@ serverInstance.use(
 const userService = new UserService(userRepository());
 const boardService = new BoardService(boardRepository());
 const storyService = new StoryService(storyRepository());
+const taskService = new TaskService(taskRepository());
 const userRouter = new UserRouter(userService).initRouter();
 const boardRouter = new BoardRouter(boardService).initRouter();
 const storyRouter = new StoryRouter(storyService).initRouter();
+const taskRouter = new TaskRouter(taskService).initRouter();
 serverInstance.use("/users", userRouter);
 serverInstance.use("/boards", boardRouter);
 serverInstance.use("/stories", storyRouter);
+serverInstance.use("/tasks", taskRouter);
 
 //server.use(helmet({
 //

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { BoardMapper } from "../../src/mariaDb/mappers/boardMapper";
-import { Board } from "../../src/types/taskBoard/board.type";
+import { Board } from "../../src/types/board/board.type";
 import { UserId } from "../../src/types/user/user.type";
 
 const boardFactory = ({

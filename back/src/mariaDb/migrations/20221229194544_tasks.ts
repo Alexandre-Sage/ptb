@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign("affected_user").references("users.id").onDelete("CASCADE");
     table.uuid("story_id").notNullable();
     table.foreign("story_id").references("stories.id").onDelete("CASCADE");
+    table.string("description").nullable();
     table.jsonb("comments").nullable();
     table.date("last_update").defaultTo(knex.fn.now(6)).notNullable();
     table.date("creation_date").defaultTo(knex.fn.now(6)).notNullable();

@@ -1,6 +1,6 @@
 import { Repository } from "../mariaDb/repositories/repository";
 import { composeHigherOrderAsync } from "../modules/higherOrder/compose";
-import { Board, BoardId, BoardRow } from "../types/taskBoard/board.type";
+import { Board, BoardId, BoardRow } from "../types/board/board.type";
 
 import { randomUUID } from "crypto";
 import { joiValidationPartialApplication } from "../modules/validation/joiHigherOrder";

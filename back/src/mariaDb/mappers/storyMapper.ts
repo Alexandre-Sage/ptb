@@ -1,4 +1,4 @@
-import { Board, BoardId, BoardRow } from "../../types/taskBoard/board.type";
+import { Board, BoardId, BoardRow } from "../../types/board/board.type";
 import { Mapper } from "../../types/globals/mapper.type";
 import { StoryRow, Story } from "../../types/story/story.type";
 

@@ -1,6 +1,5 @@
-import { User, UserRow } from "../../../types/user/user.type";
-import { Mapper } from "../../../types/globals/mapper.type";
-
+import { User, UserRow } from "../../types/user/user.type";
+import { Mapper } from "../../types/globals/mapper.type";
 
 const dbRowToObject = (dbRow: UserRow): User => {
   return {
@@ -27,13 +26,14 @@ const objectToDbRow = (user: User): UserRow => {
   };
 };
 
-
-
-function Mapper({ dbRowToObject, objectToDbRow }: Mapper<User, UserRow>): Mapper<User, UserRow> {
+function Mapper({
+  dbRowToObject,
+  objectToDbRow,
+}: Mapper<User, UserRow>): Mapper<User, UserRow> {
   return {
     objectToDbRow,
     dbRowToObject,
   };
-};
+}
 
 export const UserMapper = () => Mapper({ objectToDbRow, dbRowToObject });

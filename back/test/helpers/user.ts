@@ -1,7 +1,7 @@
 // import { server } from "../../server";
 import chaiHttp from "chai-http";
 import chai from "chai";
-import { UserMapper } from "../../src/mariaDb/mappers/user/userMapper";
+import { UserMapper } from "../../src/mariaDb/mappers/userMapper";
 
 import { server } from "../../server";
 chai.use(chaiHttp);

@@ -29,11 +29,18 @@ describe("RUN ALL", () => {
     require("./boardTest/update.test");
     require("./boardTest/delete.test");
   });
-  describe("STORIES", async () => {
+  describe("STORIES", () => {
     require("./storyTest/create.test");
     require("./storyTest/getAll.test");
     require("./storyTest/getById.test");
     require("./storyTest/update.test");
     require("./storyTest/delete.test");
+  });
+  describe("TASK", () => {
+    require("./taskTest/create.test");
+    require("./taskTest/getAll.test");
+    require("./taskTest/getById.test");
+    require("./taskTest/update.test");
+    require("./taskTest/delete.test");
   });
 });
