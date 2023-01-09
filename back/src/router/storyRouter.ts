@@ -12,8 +12,8 @@ export class StoryRouter {
     router.post(`/`, async function (req: Request, res: Response) {
       const { story } = req.body;
       try {
-        await decodeToken(req);
-        await service.create(story);
+        const { id: userId } = await decodeToken(req);
+        await service.create({ ...story, userId });
         return res.status(201).json({
           message: "Story added",
           error: false,
@@ -46,32 +46,53 @@ export class StoryRouter {
 
     router.get(`/:id`, async function (req: Request, res: Response) {
       const { id } = req.params;
-      console.log(id);
       try {
-        const { id, userName } = await decodeToken(req);
+        const { userName } = await decodeToken(req);
         const story = await service.getById(id);
-        console.log(story);
-        res.status(200).json({});
+        res.status(200).json({
+          story,
+          error: false,
+        });
       } catch (error) {
         console.log(error);
-        res.status(666).json({});
+        res.status(500).json({
+          error: true,
+          message: "Something went wrong please retry",
+        });
       }
     });
 
-    router.put(`/url/:id`, function (req: Request, res: Response) {
-      const {} = req.body;
+    router.put(`/:id`, async function (req: Request, res: Response) {
+      const { story } = req.body;
       try {
-        res.status(200).json({});
+        await decodeToken(req);
+        await service.udpate(story);
+        res.status(200).json({
+          message: "Story updated",
+          error: false,
+        });
       } catch (error) {
-        res.status(666).json({});
+        res.status(500).json({
+          error: true,
+          message: "Something went wrong please retry",
+        });
       }
     });
 
-    router.delete(`/url/:id`, function (req: Request, res: Response) {
+    router.delete(`/:id`, async function (req: Request, res: Response) {
+      const { id } = req.params;
       try {
-        res.status(200).json({});
+        await decodeToken(req);
+        await service.delete(id);
+        res.status(200).json({
+          message: "Story deleted",
+          error: false,
+        });
       } catch (error) {
-        res.status(666).json({});
+        res.status(500).json({
+          error: true,
+          message: "Something went wrong please retry",
+        });
       }
     });
     return router;

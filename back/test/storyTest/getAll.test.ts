@@ -6,11 +6,12 @@ import { connection, transaction } from "../../src/mariaDb/database";
 import { boardIds } from "../fixtures/board";
 import { fakeStories, initForStory } from "../fixtures/story";
 import { getToken } from "../helpers/globals";
+import { describe, it, after, before } from "mocha";
 
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
 const userId = randomUUID();
-export default describe("STORY SUITE", function () {
+export default describe("STORY SUITE GET ALL", function () {
   before(async () => {
     const { token, decoded } = await initForStory();
     await transaction(async (transaction) =>
@@ -24,7 +25,7 @@ export default describe("STORY SUITE", function () {
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
   });
-  it("Should create story", async () => {
+  it("Should get all story", async () => {
     const { token } = await getToken(credentials);
     const request = chai.request(server);
     try {

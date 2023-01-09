@@ -36,7 +36,6 @@ export class BoardService {
     return this.repository.getById(boardId);
   };
   update = async (data: Board) => {
-    const now = new Date();
     return composeHigherOrderAsync({
       firstToExecute: joiValidationPartialApplication(boardJoiValidationSchema),
       secondToExecute: this.repository.update,

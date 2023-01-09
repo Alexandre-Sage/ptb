@@ -30,10 +30,20 @@ export default describe("STORY SUITE GET BY ID", function () {
     const request = chai.request(server);
     try {
       const { body, status } = await request
-        .get(`/stories/${fakeStoryIds[1]}`)
+        .delete(`/stories/${fakeStoryIds[1]}`)
         .set("Authorization", `Bearer ${token.token}`);
       expect(status).eql(200);
-      expect(body).to.have.property("story");
+      expect(body).to.have.property("message").eql("Story deleted");
+      const storyCheck = await transaction(async (tsx) => {
+        return await tsx
+          .table("stories")
+          .select("*")
+          .where({
+            id: fakeStoryIds[1],
+          })
+          .first();
+      });
+      expect(storyCheck).to.be.undefined;
     } catch (error) {
       console.log({ "VI TEST ERROR": error });
       throw error;

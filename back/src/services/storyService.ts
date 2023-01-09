@@ -16,6 +16,7 @@ const storyJoiValidationSchema = Joi.object<Story>({
   finishedDate: Joi.not(),
   lastUpdate: Joi.date().required(),
   description: Joi.string().required(),
+  userId: Joi.string().required(),
 });
 
 export class StoryService {
@@ -42,10 +43,15 @@ export class StoryService {
     return this.repository.getAll(userId);
   };
   getById = async (storyId: StoryId) => {
-    const test = await this.repository.getById(storyId);
-    console.log({ test });
-    return test;
+    return this.repository.getById(storyId);
   };
-  udpate = () => {};
-  delete = () => {};
+  udpate = async (data: Story) => {
+    return composeHigherOrderAsync({
+      firstToExecute: joiValidationPartialApplication(storyJoiValidationSchema),
+      secondToExecute: this.repository.update,
+    })(data);
+  };
+  delete = (id: StoryId) => {
+    return this.repository.deleteEntry(id);
+  };
 }

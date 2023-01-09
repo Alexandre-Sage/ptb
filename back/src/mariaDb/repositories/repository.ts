@@ -54,7 +54,7 @@ export const Repository = <ObjectType, DbRowType, CustomMethods = {}>({
     const row = (await transaction(async (transaction) => {
       return transaction.table(table).select("*").where({ id: id }).first();
     })) as DbRowType;
-    console.log({ row });
+    // console.log({ row });
     return dbRowToObject(row);
   };
   const getAll = async (userId: UserId): Promise<ObjectType[]> => {
@@ -68,6 +68,7 @@ export const Repository = <ObjectType, DbRowType, CustomMethods = {}>({
   };
   const update = async (data: ObjectType) => {
     const row = objectToDbRow(data);
+
     return transaction(async (transaction) => {
       return await transaction
         .table(table)

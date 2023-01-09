@@ -7,6 +7,7 @@ import { boardFactory, boardIds, fakeBoards } from "../fixtures/board";
 import { createUserData } from "../fixtures/user";
 import { getToken } from "../helpers/globals";
 import { createNewUser } from "../helpers/user";
+import { describe, it, after, before } from "mocha";
 
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
@@ -40,10 +41,7 @@ export default describe("DELETE  BOARD", function () {
       });
       const { body, status } = await request
         .delete(`/boards/${boardId}`)
-        //.send({ board: { ...boardToUpdate, userId: token.decoded.id } })
         .set("Authorization", `Bearer ${token.token}`);
-
-      request.close();
       expect(body).to.have.property("message").eql("Board deleted");
       expect(status).eql(200);
       const requestT = chai.request(server);
@@ -57,5 +55,4 @@ export default describe("DELETE  BOARD", function () {
       throw error;
     }
   });
-  server.close();
 });

@@ -21,7 +21,7 @@ export class UserRouter {
           message: "User added",
         });
       } catch (error: any) {
-        console.log(error);
+        // console.log(error);
         error = joiErrorHandling(error);
         res.status(error.httpStatus ?? 500).json({
           error: true,

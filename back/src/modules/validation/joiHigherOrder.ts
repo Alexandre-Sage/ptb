@@ -14,7 +14,6 @@ export const joiErrorHandling = (err: any) => {
       err = new CustomError(500, err.message);
       break;
     case "empty":
-      console.log("here");
       err = new CustomError(
         500,
         `The field ${err.message.split(`"`)[1]} is empty`
