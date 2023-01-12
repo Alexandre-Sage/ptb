@@ -38,6 +38,7 @@ mocha.interfaces.tdd(
       require("./storyTest/getById.test");
       require("./storyTest/update.test");
       require("./storyTest/delete.test");
+      require("./storyTest/getByBoardId.test");
     });
     suite("TASK", () => {
       require("./taskTest/create.test");
@@ -45,6 +46,7 @@ mocha.interfaces.tdd(
       require("./taskTest/getById.test");
       require("./taskTest/update.test");
       require("./taskTest/delete.test");
+      require("./taskTest/getByStoryId.test");
     });
   })
 );

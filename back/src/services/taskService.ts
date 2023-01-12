@@ -1,8 +1,10 @@
 import { randomUUID } from "crypto";
 import Joi from "joi";
 import { Repository } from "../mariaDb/repositories/repository";
+import { TaskCustomMethods } from "../mariaDb/repositories/taskRepository";
 import { composeHigherOrderAsync } from "../modules/higherOrder/compose";
 import { joiValidationPartialApplication } from "../modules/validation/joiHigherOrder";
+import { StoryId } from "../types/story/story.type";
 import { Task, TaskId, TaskRow } from "../types/task/task.type";
 import { UserId } from "../types/user/user.type";
 
@@ -21,7 +23,9 @@ export const taskJoiValidationSchema = Joi.object<Task>({
   taskName: Joi.string().required(),
 });
 export class TaskService {
-  constructor(private readonly repository: Repository<Task, TaskRow>) {
+  constructor(
+    private readonly repository: Repository<Task, TaskRow, TaskCustomMethods>
+  ) {
     this.repository = repository;
   }
   create = async ({
@@ -64,5 +68,8 @@ export class TaskService {
   };
   delete = (id: TaskId) => {
     return this.repository.deleteEntry(id);
+  };
+  getByStoryId = async (id: StoryId) => {
+    return this.repository.getByStoryId(id);
   };
 }

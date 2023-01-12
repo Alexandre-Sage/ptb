@@ -16,7 +16,8 @@ export interface RepositoryParams<ObjectType, DbRowType, CustomMethods = {}> {
       DbRowType,
       CustomMethods
     >["transaction"],
-    table: RepositoryParams<ObjectType, DbRowType, CustomMethods>["table"]
+    table: RepositoryParams<ObjectType, DbRowType, CustomMethods>["table"],
+    mapper: RepositoryParams<ObjectType, DbRowType, CustomMethods>["mapper"]
   ) => CustomMethods | {};
 }
 
@@ -81,6 +82,6 @@ export const Repository = <ObjectType, DbRowType, CustomMethods = {}>({
       await transaction.table(table).delete().where({ id });
     });
   };
-  const customs = customMethods?.(transaction, table) as CustomMethods;
+  const customs = customMethods?.(transaction, table, mapper) as CustomMethods;
   return { create, getById, getAll, update, deleteEntry, ...customs };
 };

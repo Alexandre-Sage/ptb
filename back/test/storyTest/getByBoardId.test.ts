@@ -1,0 +1,45 @@
+// import chai from "chai";
+import chaiHttp from "chai-http";
+import { randomUUID } from "crypto";
+import { suite, test, suiteTeardown, suiteSetup } from "mocha";
+
+import chai, { expect } from "chai";
+import { server } from "../../server";
+import { connection, transaction } from "../../src/mariaDb/database";
+import { boardIds } from "../fixtures/board";
+import { fakeStories, initForStory, fakeStoryIds } from "../fixtures/story";
+import { getToken } from "../helpers/globals";
+import { Story } from "../../src/types/story/story.type";
+chai.use(chaiHttp);
+const credentials = { userName: "test", password: "test" };
+export default suite("STORY SUITE GET BY ID", function () {
+  suiteSetup(async () => {
+    const { token, decoded } = await initForStory();
+    await transaction(async (transaction) =>
+      transaction
+        .table("stories")
+        .insert([...fakeStories(boardIds[1], decoded.id)])
+    );
+  });
+  suiteTeardown(async () => {
+    await connection.transaction(
+      async (tsx) => await tsx.raw("DELETE FROM users")
+    );
+  });
+  test("Should GET ONE story", async () => {
+    const { token } = await getToken(credentials);
+    const request = chai.request(server);
+    try {
+      const { body, status } = await request
+        .get(`/stories/board/${boardIds[1]}`)
+        .set("Authorization", `Bearer ${token.token}`);
+      expect(status).eql(200);
+      expect(body).to.have.property("stories");
+      body.stories.forEach((story: Story) =>
+        expect(story).to.have.property("boardId").eql(boardIds[1])
+      );
+    } catch (error) {
+      throw error;
+    }
+  });
+});

@@ -8,9 +8,6 @@
   "slow": "175",
   "timeout": "2000",
   "ui": "tdd",
-  "watch-files": [
-    "test/**/*.ts"
-  ],
   "watch-ignore": [
     "lib/vendor",
     "test/fixtures"

@@ -95,6 +95,23 @@ export class StoryRouter {
         });
       }
     });
+    router.get(`/board/:id`, async function (req: Request, res: Response) {
+      const { id } = req.params;
+      try {
+        await decodeToken(req);
+        const stories = await service.getByBoardId(id);
+        res.status(200).json({
+          stories,
+          error: false,
+        });
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({
+          error: true,
+          message: "Something went wrong please retry",
+        });
+      }
+    });
     return router;
   };
 }
