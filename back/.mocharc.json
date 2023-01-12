@@ -1,0 +1,18 @@
+{
+  "diff": true,
+  "extension": [
+    "ts"
+  ],
+  "package": "./package.json",
+  "reporter": "nyan",
+  "slow": "175",
+  "timeout": "2000",
+  "ui": "tdd",
+  "watch-files": [
+    "test/**/*.ts"
+  ],
+  "watch-ignore": [
+    "lib/vendor",
+    "test/fixtures"
+  ]
+}

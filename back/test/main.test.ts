@@ -19,7 +19,6 @@ const test = new mocha.reporters.spec(runner, {
   ui: "tdd",
   reporterOptions: {},
 });
-// mocha.setup("")
 mocha.interfaces.tdd(
   suite("RUN ALL", () => {
     suite("USER", () => {
