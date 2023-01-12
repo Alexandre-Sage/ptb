@@ -6,13 +6,13 @@ import { connection, transaction } from "../../src/mariaDb/database";
 import { boardIds } from "../fixtures/board";
 import { fakeStories, initForStory } from "../fixtures/story";
 import { getToken } from "../helpers/globals";
-import { describe, it, after, before } from "mocha";
+import { suite, test, suiteTeardown, suiteSetup } from "mocha";
 
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
 const userId = randomUUID();
-export default describe("STORY SUITE GET ALL", function () {
-  before(async () => {
+export default suite("STORY SUITE GET ALL", function () {
+  suiteSetup(async () => {
     const { token, decoded } = await initForStory();
     await transaction(async (transaction) =>
       transaction
@@ -20,12 +20,12 @@ export default describe("STORY SUITE GET ALL", function () {
         .insert([...fakeStories(boardIds[1], decoded.id)])
     );
   });
-  after(async () => {
+  suiteTeardown(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
   });
-  it("Should get all story", async () => {
+  test("Should get all story", async () => {
     const { token } = await getToken(credentials);
     const request = chai.request(server);
     try {
@@ -36,7 +36,6 @@ export default describe("STORY SUITE GET ALL", function () {
       expect(status).eql(200);
       expect(body).to.have.property("stories");
     } catch (error) {
-      console.log({ "VI TEST ERROR": error });
       throw error;
     }
   });

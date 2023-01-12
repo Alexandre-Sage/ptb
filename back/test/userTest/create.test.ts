@@ -4,16 +4,15 @@ import { server } from "../../server";
 import { transaction } from "../../src/mariaDb/database";
 import { createUserData } from "../fixtures/user";
 import { createNewUser } from "../helpers/user";
-import { describe, it, after, before } from "mocha";
+import { suite, teardown, test } from "mocha";
 
 chai.use(chaiHttp);
 
-export default describe("USER SUITE", () => {
-  after(async () => {
+export default suite("USER SUITE", () => {
+  teardown(async () => {
     await transaction(async (tsx) => await tsx.raw("DELETE FROM users"));
-    server.close();
   });
-  it("Should create new user", async () => {
+  test("Should create new user", async () => {
     const request = chai.request(server);
     try {
       const { body, status, error } = await request.post("/users").send({
@@ -31,7 +30,7 @@ export default describe("USER SUITE", () => {
       throw error;
     }
   });
-  it("Should throw an error for empty userName", async () => {
+  test("Should throw an error for empty userName", async () => {
     const request = chai.request(server);
 
     try {
@@ -51,7 +50,7 @@ export default describe("USER SUITE", () => {
     }
     // request.close();
   });
-  it("Should throw an error for missing user name", async () => {
+  test("Should throw an error for missing user name", async () => {
     const { userName, ...data } = createUserData;
     const request = chai.request(server);
     try {

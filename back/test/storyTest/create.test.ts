@@ -6,21 +6,21 @@ import { connection, transaction } from "../../src/mariaDb/database";
 import { boardIds } from "../fixtures/board";
 import { initForStory } from "../fixtures/story";
 import { getToken } from "../helpers/globals";
-import { describe, it, after, before } from "mocha";
+import { suite, test, suiteTeardown, suiteSetup } from "mocha";
 
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
 const userId = randomUUID();
-export default describe("STORY SUITE", () => {
-  before(async () => {
+export default suite("STORY SUITE", () => {
+  suiteSetup(async () => {
     await initForStory();
   });
-  after(async () => {
+  suiteTeardown(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
   });
-  it("Should create story", async () => {
+  test("Should create story", async () => {
     const { token } = await getToken(credentials);
     const request = chai.request(server);
     try {
@@ -49,11 +49,10 @@ export default describe("STORY SUITE", () => {
         .to.be.eql("description test");
       expect(story).to.have.property("board_id").eql(boardIds[2]);
     } catch (error) {
-      console.log({ "VI TEST ERROR": error });
       throw error;
     }
   });
-  //it("Should log and get user profil info", async () => {
+  //test("Should log and get user profil info", async () => {
   //  const request = chai.request(server);
   //  try {
   //    const { token } = await getToken(credentials, request);
@@ -69,7 +68,7 @@ export default describe("STORY SUITE", () => {
   //    expect(body).to.have.property("error").to.eql(false);
   //    expect(status).toEqual(200);
   //  } catch (error) {
-  //    console.log({ "VI TEST ERROR": error });
+  //
   //    throw error;
   //  }
   //});

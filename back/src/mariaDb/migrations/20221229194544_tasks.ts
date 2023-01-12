@@ -4,8 +4,8 @@ export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable("tasks", (table) => {
     table.uuid("id").primary().notNullable();
     table.string("task_name").notNullable();
-    table.uuid("affected_user").nullable();
-    table.foreign("affected_user").references("users.id").onDelete("CASCADE");
+    table.uuid("user_id").nullable();
+    table.foreign("user_id").references("users.id").onDelete("CASCADE");
     table.uuid("story_id").notNullable();
     table.foreign("story_id").references("stories.id").onDelete("CASCADE");
     table.string("description").nullable();

@@ -7,13 +7,13 @@ interface TaskRow {
   task_name: string;
   created_by: UserId;
   story_id: StoryId;
-  affected_user: UserId;
+  user_id: UserId | null;
   description: string;
-  comments: string[];
+  comments: string[] | null;
   finished: boolean;
   last_update: Date;
   creation_date: Date;
-  finished_date: Date;
+  finished_date: Date | null;
   edition_date: Date;
 }
 interface Task {
@@ -21,13 +21,13 @@ interface Task {
   taskName: string;
   createdBy: UserId;
   storyId: StoryId;
-  affectedUser: UserId;
+  userId: UserId | null;
   description: string;
-  comments: string[];
+  comments: string[] | null;
   finished: boolean;
   lastUpdate: Date;
   creationDate: Date;
-  finishedDate: Date;
+  finishedDate: Date | null;
   editionDate: Date;
 }
 

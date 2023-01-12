@@ -7,14 +7,14 @@ import { createUserData } from "../fixtures/user";
 import { getToken } from "../helpers/globals";
 import { server } from "../../server";
 import { createNewUser } from "../helpers/user";
-import { describe, it, after, before } from "mocha";
+import { suite, test, suiteTeardown, suiteSetup } from "mocha";
 
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
 
 const userId = randomUUID();
-export default describe("BOARD SUITE UPDATE", function () {
-  before(async () => {
+export default suite("BOARD SUITE UPDATE", function () {
+  suiteSetup(async () => {
     const { body, status, error } = await createNewUser({
       data: { ...createUserData },
     });
@@ -24,12 +24,12 @@ export default describe("BOARD SUITE UPDATE", function () {
       await t.table("boards").insert([...boards]);
     });
   });
-  after(async () => {
+  suiteTeardown(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
   });
-  it("Should update a board", async () => {
+  test("Should update a board", async () => {
     const { token } = await getToken(credentials);
     try {
       const request = chai.request(server);
@@ -55,7 +55,6 @@ export default describe("BOARD SUITE UPDATE", function () {
         .eql("updated board");
       requestT.close();
     } catch (error) {
-      console.log({ "VI TEST ERROR": error });
       throw error;
     }
   });

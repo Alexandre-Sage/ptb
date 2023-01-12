@@ -7,15 +7,15 @@ import { boardIds, fakeBoards } from "../fixtures/board";
 import { createUserData } from "../fixtures/user";
 import { getToken } from "../helpers/globals";
 import { createNewUser } from "../helpers/user";
-import { describe, it, after, before } from "mocha";
+import { suite, test, suiteTeardown, suiteSetup } from "mocha";
 
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
 
 const userId = randomUUID();
-export default describe("BOARD SUITE GET ONE", () => {
+export default suite("BOARD SUITE GET ONE", () => {
   //server.close();
-  before(async () => {
+  suiteSetup(async () => {
     const { body, status, error } = await createNewUser({
       data: { ...createUserData },
     });
@@ -24,12 +24,12 @@ export default describe("BOARD SUITE GET ONE", () => {
       await t.table("boards").insert([...fakeBoards(token.decoded.id)]);
     });
   });
-  after(async () => {
+  suiteTeardown(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
   });
-  it("Should get one boards", async () => {
+  test("Should get one boards", async () => {
     const { token } = await getToken(credentials);
     const request = chai.request(server);
     try {
@@ -41,7 +41,6 @@ export default describe("BOARD SUITE GET ONE", () => {
       expect(body).to.have.property("board");
       expect(status).eql(200);
     } catch (error) {
-      console.log({ "VI TEST ERROR": error });
       throw error;
     }
     request.close();

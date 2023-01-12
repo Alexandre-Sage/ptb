@@ -5,7 +5,7 @@ import { server } from "../../server";
 import { connection } from "../../src/mariaDb/database";
 import { createUserData } from "../fixtures/user";
 import { createNewUser } from "../helpers/user";
-import { describe, it, after, before } from "mocha";
+import { suite, test, suiteTeardown, suiteSetup } from "mocha";
 
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
@@ -24,19 +24,19 @@ const getToken = async (credentials: any, request: ChaiHttp.Agent) => {
 };
 
 const userId = randomUUID();
-export default describe("CREATE BOARD SUITE", () => {
-  before(async () => {
+export default suite("CREATE BOARD SUITE", () => {
+  suiteSetup(async () => {
     const { body, status, error } = await createNewUser({
       data: { ...createUserData },
     });
   });
-  after(async () => {
+  suiteTeardown(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
     server.close();
   });
-  it("create new board", async () => {
+  test("create new board", async () => {
     const { token } = await getToken(credentials, chai.request(server));
     const request = chai.request(server);
     try {
@@ -52,12 +52,11 @@ export default describe("CREATE BOARD SUITE", () => {
       expect(body).to.have.property("error").eql(false);
       expect(status).eql(201);
     } catch (error) {
-      console.log({ "VI TEST ERROR": error });
       throw error;
     }
     request.close();
   });
-  //it("Should log and get user profil info", async () => {
+  //test("Should log and get user profil info", async () => {
   //  const request = chai.request(server);
   //  try {
   //    const { token } = await getToken(credentials, request);
@@ -73,7 +72,7 @@ export default describe("CREATE BOARD SUITE", () => {
   //    expect(body).to.have.property("error").to.eql(false);
   //    expect(status).toEqual(200);
   //  } catch (error) {
-  //    console.log({ "VI TEST ERROR": error });
+  //
   //    throw error;
   //  }
   //});

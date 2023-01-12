@@ -1,7 +1,7 @@
 // import chai from "chai";
 import chaiHttp from "chai-http";
 import { randomUUID } from "crypto";
-import { describe, it, after, before } from "mocha";
+import { suite, test, suiteTeardown, suiteSetup } from "mocha";
 
 import chai, { expect } from "chai";
 import { server } from "../../server";
@@ -15,9 +15,9 @@ import { StoryRow } from "../../src/types/story/story.type";
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
 let story: StoryRow;
-export default describe("STORY SUITE UDPADTE", function () {
+export default suite("STORY SUITE UDPADTE", function () {
   // const { token } = await getToken(credentials);
-  before(async () => {
+  suiteSetup(async () => {
     const { token, decoded } = await initForStory();
     const stories = fakeStories(boardIds[1], decoded.id);
     story = stories[1] as StoryRow;
@@ -25,12 +25,12 @@ export default describe("STORY SUITE UDPADTE", function () {
       transaction.table("stories").insert([...stories])
     );
   });
-  after(async () => {
+  suiteTeardown(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
   });
-  it("Should update story", async () => {
+  test("Should update story", async () => {
     const { token } = await getToken(credentials);
     const request = chai.request(server);
     try {
@@ -56,7 +56,6 @@ export default describe("STORY SUITE UDPADTE", function () {
       expect(storyCheck).to.have.property("story_name").to.be.eql("updated");
       expect(storyCheck);
     } catch (error) {
-      console.log({ "VI TEST ERROR": error });
       throw error;
     }
     request.close();

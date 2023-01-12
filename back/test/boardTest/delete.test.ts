@@ -7,14 +7,14 @@ import { boardFactory, boardIds, fakeBoards } from "../fixtures/board";
 import { createUserData } from "../fixtures/user";
 import { getToken } from "../helpers/globals";
 import { createNewUser } from "../helpers/user";
-import { describe, it, after, before } from "mocha";
+import { suite, test, suiteTeardown, suiteSetup } from "mocha";
 
 chai.use(chaiHttp);
 const credentials = { userName: "test", password: "test" };
 
 const userId = randomUUID();
-export default describe("DELETE  BOARD", function () {
-  before(async () => {
+export default suite("DELETE  BOARD", function () {
+  suiteSetup(async () => {
     const { body, status, error } = await createNewUser({
       data: { ...createUserData },
     });
@@ -24,13 +24,13 @@ export default describe("DELETE  BOARD", function () {
       await t.table("boards").insert([...boards]);
     });
   });
-  after(async () => {
+  suiteTeardown(async () => {
     await connection.transaction(
       async (tsx) => await tsx.raw("DELETE FROM users")
     );
     server.close();
   });
-  it("Should delete a   board", async () => {
+  test("Should delete a   board", async () => {
     const { token } = await getToken(credentials);
     try {
       const request = chai.request(server);
@@ -51,7 +51,6 @@ export default describe("DELETE  BOARD", function () {
       requestT.close();
       expect(boardBody.board).to.be.undefined;
     } catch (error) {
-      console.log({ "VI TEST ERROR": error });
       throw error;
     }
   });

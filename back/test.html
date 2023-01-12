@@ -1,0 +1,166 @@
+    <section class="suite">
+      <h1>RUN ALL</h1>
+      <dl>
+        <section class="suite">
+          <h1>TASK</h1>
+          <dl>
+            <section class="suite">
+              <h1>TASK SUITE CREATE</h1>
+              <dl>
+{ listening: true, port: '5000' }
+                <dt class="error">Should create task</dt>
+                <dt class="error">/home/arch_alex/project/.perso/personalTaskBoard/back/test/main.test.ts</dt>
+                <dd class="error"><pre><code>__awaiter(void 0, void 0, void 0, function* () {
+        const { token } = yield (0, globals_1.getToken)(credentials);
+        const request = chai_1.default.request(server_1.server);
+        try {
+            const { body, status } = yield request
+                .post(&#x22;/tasks&#x22;)
+                .send({
+                task: {
+                    taskName: &#x22;test story&#x22;,
+                    description: &#x22;description test&#x22;,
+                    storyId: story_1.fakeStoryIds[1],
+                },
+            })
+                .set(&#x22;Authorization&#x22;, &#x60;Bearer ${token.token}&#x60;);
+            (0, chai_1.expect)(body).to.have.property(&#x22;error&#x22;).eql(false);
+            (0, chai_1.expect)(status).eql(201);
+            const task = yield (0, database_1.transaction)((tsx) =&#x3E; __awaiter(void 0, void 0, void 0, function* () {
+                return yield tsx
+                    .table(&#x22;tasks&#x22;)
+                    .select(&#x22;*&#x22;)
+                    .where({ story_id: story_1.fakeStoryIds[1] })
+                    .first();
+            }));
+            (0, chai_1.expect)(task).to.have.property(&#x22;task_name&#x22;).to.be.eql(&#x22;Test task&#x22;);
+            (0, chai_1.expect)(task)
+                .to.have.property(&#x22;description&#x22;)
+                .to.be.eql(&#x22;Test description&#x22;);
+            (0, chai_1.expect)(task).to.have.property(&#x22;story_id&#x22;).eql(story_1.fakeStoryIds[1]);
+        }
+        catch (error) {
+            throw error;
+        }
+    })</code></pre></dd>
+                <dd class="error">AssertionError: expected {} to have property &#x27;error&#x27;</dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>TASK SUITE GET ALL</h1>
+              <dl>
+                <dt class="error">Should get all task</dt>
+                <dt class="error">/home/arch_alex/project/.perso/personalTaskBoard/back/test/main.test.ts</dt>
+                <dd class="error"><pre><code>__awaiter(void 0, void 0, void 0, function* () {
+        const { token } = yield (0, globals_1.getToken)(credentials);
+        const request = chai_1.default.request(server_1.server);
+        try {
+            const { body, status } = yield request
+                .get(&#x22;/tasks&#x22;)
+                .set(&#x22;Authorization&#x22;, &#x60;Bearer ${token.token}&#x60;);
+            (0, chai_1.expect)(body).to.have.property(&#x22;error&#x22;).eql(false);
+            (0, chai_1.expect)(body).to.have.property(&#x22;tasks&#x22;).eql(false);
+            console.log(&#x22;getAll&#x22;, body);
+            (0, chai_1.expect)(status).eql(200);
+        }
+        catch (error) {
+            throw error;
+        }
+    })</code></pre></dd>
+                <dd class="error">AssertionError: expected {} to have property &#x27;error&#x27;</dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>TASK SUITE GET ONE</h1>
+              <dl>
+                <dt class="error">Should get one task</dt>
+                <dt class="error">/home/arch_alex/project/.perso/personalTaskBoard/back/test/main.test.ts</dt>
+                <dd class="error"><pre><code>__awaiter(void 0, void 0, void 0, function* () {
+        const { token } = yield (0, globals_1.getToken)(credentials);
+        const request = chai_1.default.request(server_1.server);
+        try {
+            const { body, status } = yield request
+                .get(&#x60;/tasks/${task_1.tasksIds[1]}&#x60;)
+                .set(&#x22;Authorization&#x22;, &#x60;Bearer ${token.token}&#x60;);
+            (0, chai_1.expect)(body).to.have.property(&#x22;error&#x22;).eql(false);
+            (0, chai_1.expect)(body).to.have.property(&#x22;task&#x22;).eql(false);
+            (0, chai_1.expect)(body.task).to.have.property(&#x22;id&#x22;).eql(task_1.tasksIds[1]);
+            (0, chai_1.expect)(status).eql(200);
+        }
+        catch (error) {
+            throw error;
+        }
+    })</code></pre></dd>
+                <dd class="error">AssertionError: expected {} to have property &#x27;error&#x27;</dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>TASK SUITE UPDATE</h1>
+              <dl>
+                <dt class="error">Should update a task</dt>
+                <dt class="error">/home/arch_alex/project/.perso/personalTaskBoard/back/test/main.test.ts</dt>
+                <dd class="error"><pre><code>__awaiter(void 0, void 0, void 0, function* () {
+        const { token } = yield (0, globals_1.getToken)(credentials);
+        const request = chai_1.default.request(server_1.server);
+        try {
+            const { body, status } = yield request
+                .put(&#x60;/tasks/${task_1.tasksIds[1]}&#x60;)
+                .send({
+                task: Object.assign({}, (0, task_1.taskFactory)({ id: task_1.tasksIds[1], taskName: &#x22;updated name&#x22; })),
+            })
+                .set(&#x22;Authorization&#x22;, &#x60;Bearer ${token.token}&#x60;);
+            (0, chai_1.expect)(body).to.have.property(&#x22;error&#x22;).eql(false);
+            (0, chai_1.expect)(body).to.have.property(&#x22;Message&#x22;).eql(&#x22;Task updated&#x22;);
+            (0, chai_1.expect)(status).eql(201);
+            const task = yield (0, database_1.transaction)((tsx) =&#x3E; __awaiter(void 0, void 0, void 0, function* () {
+                return yield tsx
+                    .table(&#x22;tasks&#x22;)
+                    .select(&#x22;*&#x22;)
+                    .where({ id: task_1.tasksIds[1] })
+                    .first();
+            }));
+            (0, chai_1.expect)(task).to.have.property(&#x22;task_name&#x22;).eql(&#x22;updated name&#x22;);
+            (0, chai_1.expect)(task).to.have.property(&#x22;id&#x22;).eql(task_1.tasksIds[1]);
+        }
+        catch (error) {
+            throw error;
+        }
+    })</code></pre></dd>
+                <dd class="error">AssertionError: expected {} to have property &#x27;error&#x27;</dd>
+              </dl>
+            </section>
+            <section class="suite">
+              <h1>TASK SUITE DELET</h1>
+              <dl>
+                <dt class="error">Should delete a task</dt>
+                <dt class="error">/home/arch_alex/project/.perso/personalTaskBoard/back/test/main.test.ts</dt>
+                <dd class="error"><pre><code>__awaiter(void 0, void 0, void 0, function* () {
+        const { token } = yield (0, globals_1.getToken)(credentials);
+        const request = chai_1.default.request(server_1.server);
+        try {
+            const { body, status } = yield request
+                .delete(&#x60;/tasks/${task_1.tasksIds[1]}&#x60;)
+                .set(&#x22;Authorization&#x22;, &#x60;Bearer ${token.token}&#x60;);
+            (0, chai_1.expect)(body).to.have.property(&#x22;error&#x22;).eql(false);
+            (0, chai_1.expect)(body).to.have.property(&#x22;Message&#x22;).eql(&#x22;Task updated&#x22;);
+            (0, chai_1.expect)(status).eql(200);
+            const task = yield (0, database_1.transaction)((tsx) =&#x3E; __awaiter(void 0, void 0, void 0, function* () {
+                return yield tsx
+                    .table(&#x22;tasks&#x22;)
+                    .select(&#x22;*&#x22;)
+                    .where({ id: task_1.tasksIds[1] })
+                    .first();
+            }));
+            (0, chai_1.expect)(task).to.be.undefined;
+        }
+        catch (error) {
+            throw error;
+        }
+    })</code></pre></dd>
+                <dd class="error">AssertionError: expected {} to have property &#x27;error&#x27;</dd>
+              </dl>
+            </section>
+          </dl>
+        </section>
+      </dl>
+    </section>
