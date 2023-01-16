@@ -1,0 +1,40 @@
+@import "../main.scss";
+
+.user-main-container {
+  @include dev-border(blue);
+  width: 100%;
+  min-height: 95vh;
+
+  .user-header {
+    @include dev-border(white);
+
+    h1 {}
+
+    h2 {}
+  }
+
+  main {
+    display: flex;
+    flex-direction: row;
+    // flex-wrap: wrap;
+    justify-content: space-around;
+
+    .left-dashboards {
+      @include dev-border(green);
+      display: flex;
+      @include flex-column-spacedAround;
+      min-height: 75vh;
+    }
+
+    .right-dashboards {
+      margin-left: 2rem;
+      min-height: 75vh;
+
+      @include flex-column-full-centered;
+
+      StoryDashboard {
+        margin-top: 2rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+@import "../main.scss";
+
+.secondary-btn-container {
+  width: 7rem;
+  height: 1.5rem;
+  @include flex-column-full-centered;
+
+  .secondary-btn {
+    width: 5rem;
+    background-color: transparent;
+    border: 1px solid $blueBorder;
+    border-radius: $radius;
+    height: 2.5rem;
+
+    color: $fontColor;
+
+    &:hover {}
+  }
+}

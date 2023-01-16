@@ -1,10 +1,34 @@
-@import url("../main.scss");
+@import "../main.scss";
 
-.txt-input-container{
-  .txt-input-label{
+.txt-input-container {
+  @include flex-column-full-centered;
+  width: 20rem;
+  height: 5rem;
 
-  }
-  .txt-input{
-    
+  .txt-input-sub-container {
+    display: flex;
+    flex-direction: column;
+
+    .txt-input-label {
+      align-self: flex-start;
+      margin-left: rem;
+    }
+
+    .txt-input {
+      width: 15rem;
+      height: 2rem;
+      @include shadow;
+      color: $fontColor;
+
+      font: {
+        size: 1rem;
+      }
+
+      margin-top: 0.5rem;
+      border: 1px solid rgba(0, 189, 255, 0.8);
+      border-radius: 0.2rem;
+      background-color: transparent;
+
+    }
   }
 }

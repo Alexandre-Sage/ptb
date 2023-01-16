@@ -1,0 +1,19 @@
+@import "../main.scss";
+
+.btn-container {
+  width: 15rem;
+  height: 3.5rem;
+  @include flex-column-full-centered;
+
+  .main-btn {
+    width: 12.5rem;
+    background-color: transparent;
+    border: 1px solid $blueBorder;
+    border-radius: $radius;
+    height: 2.5rem;
+
+    color: $fontColor;
+
+    &:hover {}
+  }
+}

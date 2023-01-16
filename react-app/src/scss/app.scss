@@ -1,0 +1,34 @@
+@import "./main";
+
+
+
+.landing-page {
+  @include flex-column-full-centered;
+
+  width: 75%;
+  height: 50rem;
+
+
+  header {
+    text-align: center;
+    width: 50%;
+    @include flex-column-full-centered;
+
+    h1 {
+      font-size: 3rem;
+    }
+  }
+
+  main {
+    width: 75%;
+    height: 30rem;
+
+    @include flex-column-full-centered;
+
+    section {
+      @include flex-column-spacedAround;
+      height: 10rem;
+      width: 100%;
+    }
+  }
+}

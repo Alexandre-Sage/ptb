@@ -1,0 +1,27 @@
+@import "../main.scss";
+
+.select-container {
+  @include dev-border(red);
+  height: 4rem;
+  width: 17.5rem;
+
+  @include flex-column-full-centered;
+
+  select {
+    background-color: transparent;
+    border: 1px solid $blueBorder;
+    height: 2.5rem;
+    width: 15rem;
+    border-radius: $radius;
+
+    color: $fontColor;
+
+    option {
+      background-color: $secondaryBackgroundColor;
+      border: none;
+      color: $fontColor;
+
+    }
+
+  }
+}
