@@ -7,7 +7,7 @@ const dbRowToObject = (dbRow: BoardRow): Board => {
     boardName: dbRow.board_name,
     creationDate: dbRow.creation_date,
     editionDate: dbRow.edition_date,
-    finished: dbRow.finished,
+    finished: dbRow.finished === 0 ? false : true,
     finishedDate: dbRow.finished_date,
     lastUpdate: dbRow.last_update,
     userId: dbRow.user_id,

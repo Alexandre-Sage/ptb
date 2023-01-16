@@ -7,7 +7,7 @@ interface BoardRow {
   user_id: UserId;
   creation_date: Date;
   last_update: Date;
-  finished: boolean;
+  finished: boolean | number;
   finished_date: Date | null;
   edition_date: Date;
   description: string;

@@ -16,10 +16,10 @@ export class BoardRouter {
   initRouter = () => {
     const { router, service } = this;
     router.post(`/`, async function (req: Request, res: Response) {
-      const { board } = req.body;
+      const { data } = req.body;
       try {
         const { id: tokenId } = await decodeToken(req);
-        await service.create({ ...board, userId: tokenId });
+        await service.create({ ...data, userId: tokenId });
         res.status(201).json({
           error: false,
           message: "Board added with success",
@@ -67,14 +67,15 @@ export class BoardRouter {
     });
 
     router.put(`/:id`, async function (req: Request, res: Response) {
-      const { board } = req.body;
+      const { data } = req.body;
       try {
-        await service.update(board);
+        await service.update(data);
         res.status(201).json({
           message: "Board updated",
           error: false,
         });
       } catch (error) {
+        console.log(error);
         res.status(500).json({
           error: true,
           message: "Something wrong happened please retry",

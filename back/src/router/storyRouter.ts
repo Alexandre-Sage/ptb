@@ -10,10 +10,10 @@ export class StoryRouter {
   initRouter = () => {
     const { router, service } = this;
     router.post(`/`, async function (req: Request, res: Response) {
-      const { story } = req.body;
+      const { data } = req.body;
       try {
         const { id: userId } = await decodeToken(req);
-        await service.create({ ...story, userId });
+        await service.create({ ...data, userId });
         return res.status(201).json({
           message: "Story added",
           error: false,
@@ -63,10 +63,10 @@ export class StoryRouter {
     });
 
     router.put(`/:id`, async function (req: Request, res: Response) {
-      const { story } = req.body;
+      const { data } = req.body;
       try {
         await decodeToken(req);
-        await service.udpate(story);
+        await service.udpate(data);
         res.status(200).json({
           message: "Story updated",
           error: false,

@@ -10,11 +10,10 @@ const dbRowToObject = (dbRow: TaskRow): Task => {
     userId: dbRow.user_id,
     description: dbRow.description,
     comments: dbRow.comments,
-    finished: dbRow.finished,
     lastUpdate: dbRow.last_update,
     creationDate: dbRow.creation_date,
-    finishedDate: dbRow.finished_date,
     editionDate: dbRow.edition_date,
+    status: dbRow.status,
   };
 };
 const objectToDbRow = (task: Task): TaskRow => {
@@ -26,11 +25,10 @@ const objectToDbRow = (task: Task): TaskRow => {
     user_id: task.userId,
     description: task.description,
     comments: task.comments,
-    finished: task.finished,
     last_update: task.lastUpdate,
     creation_date: task.creationDate,
-    finished_date: task.finishedDate,
     edition_date: task.editionDate,
+    status: task.status,
   };
 };
 

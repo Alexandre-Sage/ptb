@@ -10,10 +10,9 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign("story_id").references("stories.id").onDelete("CASCADE");
     table.string("description").nullable();
     table.jsonb("comments").nullable();
+    table.string("status").notNullable();
     table.date("last_update").defaultTo(knex.fn.now(6)).notNullable();
     table.date("creation_date").defaultTo(knex.fn.now(6)).notNullable();
-    table.boolean("finished").notNullable();
-    table.date("finished_date").nullable();
     table.date("edition_date").defaultTo(knex.fn.now(6)).notNullable();
     table.uuid("created_by").notNullable();
     table.foreign("created_by").references("users.id").onDelete("CASCADE");

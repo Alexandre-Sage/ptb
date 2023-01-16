@@ -19,6 +19,7 @@
     "formidable": "v3",
     "joi": "^17.7.0",
     "knex": "^2.4.0",
+    "morgan": "^1.10.0",
     "mysql2": "^2.3.3",
     "prettier": "^2.8.2",
     "superagent": "v7.0.2"
@@ -29,6 +30,7 @@
     "@types/express": "^4.17.15",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/mocha": "^10.0.1",
+    "@types/morgan": "^1.9.4",
     "@types/node": "^18.11.18",
     "@vitest/coverage-c8": "^0.26.3",
     "mocha": "^10.2.0",

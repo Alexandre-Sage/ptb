@@ -10,12 +10,12 @@ interface TaskRow {
   user_id: UserId | null;
   description: string;
   comments: string[] | null;
-  finished: boolean;
   last_update: Date;
   creation_date: Date;
-  finished_date: Date | null;
   edition_date: Date;
+  status: TaskStatus;
 }
+type TaskStatus = "TO_DO" | "IN_PROGRESS" | "FINISHED";
 interface Task {
   id: TaskId;
   taskName: string;
@@ -24,11 +24,10 @@ interface Task {
   userId: UserId | null;
   description: string;
   comments: string[] | null;
-  finished: boolean;
   lastUpdate: Date;
   creationDate: Date;
-  finishedDate: Date | null;
   editionDate: Date;
+  status: TaskStatus;
 }
 
 export { TaskId, Task, TaskRow };

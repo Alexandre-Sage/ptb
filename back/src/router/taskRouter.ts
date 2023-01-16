@@ -10,10 +10,10 @@ export class TaskRouter {
   initRouter = () => {
     const { router, service } = this;
     router.post(`/`, async function (req: Request, res: Response) {
-      const { task } = req.body;
+      const { data } = req.body;
       try {
         const { userName, id } = await decodeToken(req);
-        await service.create({ ...task, userId: id });
+        await service.create({ ...data, userId: id });
         res.status(201).json({
           message: "Task added",
           error: false,
@@ -63,12 +63,12 @@ export class TaskRouter {
     });
 
     router.put(`/:id`, async function (req: Request, res: Response) {
-      const { task } = req.body;
+      const { data } = req.body;
       const { id } = req.params;
 
       try {
         const { userName, id } = await decodeToken(req);
-        await service.update(task);
+        await service.update(data);
         res.status(201).json({
           error: false,
           message: "Task updated",

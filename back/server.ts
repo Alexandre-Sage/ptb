@@ -18,6 +18,7 @@ import "dotenv/config";
 import { taskRepository } from "./src/mariaDb/repositories/taskRepository";
 import { TaskRouter } from "./src/router/taskRouter";
 import { TaskService } from "./src/services/taskService";
+import morgan from "morgan";
 
 export class TaskBoardServer {
   serverInstance = express();
@@ -29,6 +30,7 @@ export class TaskBoardServer {
         origin: "*",
       })
     );
+    this.serverInstance.use(morgan("tiny"));
   };
   initRouteAndServices = () => {
     const userService = new UserService(userRepository());

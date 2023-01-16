@@ -15,12 +15,11 @@ export const taskJoiValidationSchema = Joi.object<Task>({
   creationDate: Joi.date().required(),
   description: Joi.string().optional(),
   editionDate: Joi.date().required(),
-  finished: Joi.boolean().required(),
-  finishedDate: Joi.not(),
   id: Joi.string().required(),
   lastUpdate: Joi.date().required(),
   storyId: Joi.string().required(),
   taskName: Joi.string().required(),
+  status: Joi.string().required(),
 });
 export class TaskService {
   constructor(
@@ -41,13 +40,12 @@ export class TaskService {
       storyId,
       description,
       createdBy: userId,
-      userId: null,
       comments: [],
-      finished: false,
-      finishedDate: null,
       editionDate: now,
       creationDate: now,
       lastUpdate: now,
+      userId,
+      status: "TO_DO",
     };
     return composeHigherOrderAsync({
       firstToExecute: joiValidationPartialApplication(taskJoiValidationSchema),
