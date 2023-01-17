@@ -1,3 +1,4 @@
+import { Status } from "../globals/status.type";
 import { UserId } from "../user/user.type";
 
 type BoardId = string;
@@ -7,8 +8,7 @@ interface BoardRow {
   user_id: UserId;
   creation_date: Date;
   last_update: Date;
-  finished: boolean | number;
-  finished_date: Date | null;
+  status: Status;
   edition_date: Date;
   description: string;
 }
@@ -19,8 +19,7 @@ interface Board {
   userId: UserId;
   creationDate: Date;
   lastUpdate: Date;
-  finished: boolean;
-  finishedDate: Date | null;
+  status: Status;
   editionDate: Date;
   description: string;
 }

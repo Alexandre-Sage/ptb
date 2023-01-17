@@ -13,14 +13,13 @@ export class BoardService {
   }
   create = async ({ boardName, userId, description }: Board) => {
     const now = new Date();
-    const board = {
+    const board: Board = {
       boardName,
       userId,
       description,
       creationDate: now,
       editionDate: now,
-      finished: false,
-      finishedDate: null,
+      status: "TO_DO",
       id: randomUUID(),
       lastUpdate: now,
     };

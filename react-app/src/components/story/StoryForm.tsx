@@ -5,8 +5,12 @@ import { MainButton } from "../shared/buttons/MainButton";
 import { BoardSelect } from "../shared/inputs/select/BoardsSelect";
 import { TextArea } from "../shared/inputs/TextArea";
 import { TextInput } from "../shared/inputs/TextInput";
+import "../../scss/form/storyForm.scss";
+export interface StoryFormProps {
+  storyId?: StoryId;
+}
 
-export const StoryForm = ({ storyId }: { storyId?: StoryId }) => {
+export const StoryForm = ({ storyId }: StoryFormProps) => {
   const [story, updateStoryData, setStory] = useStory(storyId);
   const onInputChange = ({
     /* currentTarget: { value, name }, */ target: { value, name },
@@ -16,7 +20,7 @@ export const StoryForm = ({ storyId }: { storyId?: StoryId }) => {
       [name]: value,
     }));
   return (
-    <form>
+    <form className="story-form">
       <BoardSelect
         onChange={(e) => {
           onInputChange(e);

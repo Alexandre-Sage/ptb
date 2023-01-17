@@ -1,0 +1,27 @@
+@import "../main.scss";
+
+.txt-area-container {
+  width: 17rem;
+  height: 6rem;
+  @include flex-column-full-centered;
+
+  .txt-area-sub-container {
+    @include flex-column-full-centered;
+
+    width: 15rem;
+
+    .txt-area-label {
+      align-self: flex-start;
+
+    }
+
+    .txt-area {
+      width: 100%;
+      height: 3.5rem;
+      border-radius: $radius;
+      background-color: transparent;
+      border: 1px solid $blueBorder;
+      color: $fontColor;
+    }
+  }
+}

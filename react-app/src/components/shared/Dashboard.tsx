@@ -1,4 +1,4 @@
-import { ReactNode, useRef, useState } from "react";
+import React, { ReactNode, useRef, useState } from "react";
 import Draggable, { DraggableBounds } from "react-draggable";
 import { serverDateToLocalString } from "../../modules/date";
 import { MainButton } from "./buttons/MainButton";
@@ -14,6 +14,7 @@ import {
   redirect,
 } from "react-router-dom";
 import "../../scss/dashboard/dashboard.scss";
+import { Modal, useModal } from "./modal/Modal";
 export interface DashboardProps {
   title: string;
   buttonText: string;
@@ -49,7 +50,8 @@ export const Dashboard = ({
 }: DashboardProps) => {
   if (itemAreLinks && !urlPrefix)
     throw new Error("If item are links urlPrefix is required");
-  const [displayForm, setDisplayForm] = useState<boolean>(false);
+  //const [displayForm, setDisplayForm] = useState<boolean>(false);
+  const { toggleModal, setModal } = useModal();
   const [dataToEditId, setDataToEditId] = useState<string>("");
   const [isDraggable, setDraggable] = useState<boolean>(false);
   const testRef = useRef(null);
@@ -78,7 +80,7 @@ export const Dashboard = ({
           text="Edit"
           onClick={() => {
             setDataToEditId(data.id);
-            setDisplayForm((prev) => !prev);
+            setModal((prev) => !prev);
           }}
         />
       </div>
@@ -86,32 +88,37 @@ export const Dashboard = ({
   ));
   return (
     // <Draggable nodeRef={testRef} disabled={isDraggable}>
-    <ResizableComponent
-      onResizeStart={() => setDraggable(true)}
-      onResizeStop={() => setDraggable(false)}
-      className="dashboard-resizable-container"
-      width={resizableDimension?.width ?? 666}
-      height={resizableDimension?.height ?? 333}
-    >
-      <section ref={testRef} className="dashboard-section">
-        <div className="title-container">
-          <h3>{title}</h3>
-        </div>
-        <div className="data-container">
-          {displayForm ? (
-            creationForm(dataToEditId)
-          ) : (
+    <React.Fragment>
+      <ResizableComponent
+        onResizeStart={() => setDraggable(true)}
+        onResizeStop={() => setDraggable(false)}
+        className="dashboard-resizable-container"
+        width={resizableDimension?.width ?? 666}
+        height={resizableDimension?.height ?? 333}
+      >
+        <section ref={testRef} className="dashboard-section">
+          <div className="title-container">
+            <h3>{title}</h3>
+          </div>
+          <div className="data-container">
             <ul className="data-list">{dataJsx}</ul>
-          )}
-        </div>
-        <div className="dashboard-main-button-container">
-          <MainButton
-            text={buttonText}
-            onClick={() => setDisplayForm((prev) => !prev)}
-          />
-        </div>
-      </section>
-    </ResizableComponent>
+          </div>
+          <div className="dashboard-main-button-container">
+            <MainButton
+              text={buttonText}
+              onClick={() => setModal((prev) => !prev)}
+            />
+          </div>
+        </section>
+      </ResizableComponent>
+      <Modal
+        setModal={setModal}
+        toggleModal={toggleModal}
+        onCloseCallback={() => setDataToEditId("")}
+      >
+        {creationForm(dataToEditId)}
+      </Modal>
+    </React.Fragment>
     // </Draggable>
   );
 };

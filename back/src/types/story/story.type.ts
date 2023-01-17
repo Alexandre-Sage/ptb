@@ -1,4 +1,5 @@
 import { BoardId } from "../board/board.type";
+import { Status } from "../globals/status.type";
 import { UserId } from "../user/user.type";
 
 type StoryId = string;
@@ -10,8 +11,7 @@ interface StoryRow {
   creation_date: Date;
   user_id: UserId;
   last_update: Date;
-  finished: boolean;
-  finished_date: Date | null;
+  status: Status;
   edition_date: Date;
   description: string;
 }
@@ -22,8 +22,7 @@ interface Story {
   creationDate: Date;
   userId: UserId;
   lastUpdate: Date;
-  finished: boolean;
-  finishedDate: Date | null;
+  status: Status;
   editionDate: Date;
   description: string;
 }

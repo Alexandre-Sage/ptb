@@ -1,5 +1,5 @@
 import React from "react";
-// import "../../../scss/areas/textInput.scss";
+import "../../../scss/inputs/textArea.scss";
 interface TextAreaProps
   extends Partial<
     React.DetailedHTMLProps<

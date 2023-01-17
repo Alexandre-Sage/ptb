@@ -9,8 +9,7 @@ export async function up(knex: Knex): Promise<void> {
     table.date("creation_date").defaultTo(knex.fn.now(6)).notNullable();
     table.date("last_update").defaultTo(knex.fn.now(6)).notNullable();
     table.string("description").nullable();
-    table.boolean("finished").notNullable();
-    table.date("finished_date").nullable();
+    table.string("status").notNullable();
     table.date("edition_date").defaultTo(knex.fn.now(6)).notNullable();
   });
 }

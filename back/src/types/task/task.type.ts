@@ -1,3 +1,4 @@
+import { Status } from "../globals/status.type";
 import { StoryId } from "../story/story.type";
 import { User, UserId } from "../user/user.type";
 
@@ -13,9 +14,9 @@ interface TaskRow {
   last_update: Date;
   creation_date: Date;
   edition_date: Date;
-  status: TaskStatus;
+  status: Status;
 }
-type TaskStatus = "TO_DO" | "IN_PROGRESS" | "FINISHED";
+
 interface Task {
   id: TaskId;
   taskName: string;
@@ -27,7 +28,7 @@ interface Task {
   lastUpdate: Date;
   creationDate: Date;
   editionDate: Date;
-  status: TaskStatus;
+  status: Status;
 }
 
 export { TaskId, Task, TaskRow };

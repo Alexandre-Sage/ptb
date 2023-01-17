@@ -1,0 +1,7 @@
+@import "../main.scss";
+
+.board-form {
+  width: 30rem;
+  height: 20rem;
+  @include flex-column-full-centered
+}

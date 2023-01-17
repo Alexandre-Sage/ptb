@@ -1,8 +1,10 @@
 import { title } from "process";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { useFullStory } from "../../api/storyApi";
+import { serverDateToLocalString } from "../../modules/date";
 import { StoryId } from "../../types/story/story.type";
 import { Status } from "../../types/task/task.type";
+import { SecondaryButton } from "../shared/buttons/SecondaryButton";
 import { TaskCard } from "../task/Task";
 export const StorySection = ({
   tasks,
@@ -12,7 +14,7 @@ export const StorySection = ({
   title: Status;
 }) => {
   return (
-    <section>
+    <section className="story-section-container">
       <header>
         <h3>{title.toLowerCase().split("_").join("")}</h3>
       </header>
@@ -38,10 +40,17 @@ export const Story = ({ storyId }: { storyId: StoryId }) => {
     <TaskCard key={task.id} task={task} updateStory={updateStory} />
   ));
   return (
-    <section>
-      <StorySection tasks={toDoTasksJsx} title="TO_DO" />
-      <StorySection tasks={inProgressTasksJsx} title="IN_PROGRESS" />
-      <StorySection tasks={finishedTasksJsx} title="FINISHED" />
+    <section className="story">
+      <header>
+        <h2>{story.storyName}</h2>
+        <p>{serverDateToLocalString(story.creationDate)}</p>
+        <SecondaryButton text="Edit" />
+      </header>
+      <main>
+        <StorySection tasks={toDoTasksJsx} title="TO_DO" />
+        <StorySection tasks={inProgressTasksJsx} title="IN_PROGRESS" />
+        <StorySection tasks={finishedTasksJsx} title="FINISHED" />
+      </main>
     </section>
   );
 };

@@ -31,8 +31,8 @@ export const TaskCard = ({
   };
   return (
     <Draggable nodeRef={Ref}>
-      <div ref={Ref}>
-        <div>
+      <section ref={Ref} className="task-container">
+        <header>
           <h4>{task.taskName}</h4>
           <StatusSelect
             label="Status"
@@ -40,12 +40,12 @@ export const TaskCard = ({
             style={{ width: "7rem" }}
             onChange={onStatusChange}
           />
-        </div>
-        <div>
+        </header>
+        <main>
           <p>{serverDateToLocalString(task.creationDate)}</p>
           <p>{task.status}</p>
-        </div>
-      </div>
+        </main>
+      </section>
     </Draggable>
   );
 };

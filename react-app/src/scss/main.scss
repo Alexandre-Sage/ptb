@@ -1,9 +1,10 @@
 // @use "app.scss";
-$bgColor: rgba(0, 0, 0, 0.8);
+$bgColor: rgba(5, 5, 5, 0.93);
+$bgColorLight: rgba(0, 0, 0, 0.6);
+$secondaryBackgroundColor: rgba(30, 30, 30, 0.9);
 $fontColor: rgba(241, 251, 252, 0.8);
 $blueBorder: rgba(0, 189, 255, 0.3);
 $radius: 0.2rem;
-$secondaryBackgroundColor: rgba(21, 21, 21, 0.93);
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 input:-webkit-autofill,

@@ -2,7 +2,7 @@ import { deleteStory, useStories } from "../../../api/storyApi";
 import { StoryId } from "../../../types/story/story.type";
 import { Dashboard, DashboardData } from "../../shared/Dashboard";
 import { StoryForm } from "../../story/StoryForm";
-
+import { StoryFormModal } from "../../story/StoryFormModal";
 export const StoryDashboard = () => {
   const [stories, setStories] = useStories();
   const onDeleteStory = async (storyId: StoryId) => {

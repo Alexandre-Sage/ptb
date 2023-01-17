@@ -5,7 +5,7 @@ import { MainButton } from "../shared/buttons/MainButton";
 import { StoriesSelect } from "../shared/inputs/select/StorySelect";
 import { TextArea } from "../shared/inputs/TextArea";
 import { TextInput } from "../shared/inputs/TextInput";
-
+import "../../scss/form/taskForm.scss";
 export const TaskForm = ({ taskId }: { taskId?: TaskId }) => {
   const { task, updateTasksData, setTask } = useTask(taskId);
   const onInputChange = ({ currentTarget: { value, name } }: Event) =>
@@ -15,7 +15,7 @@ export const TaskForm = ({ taskId }: { taskId?: TaskId }) => {
     }));
   console.log(task);
   return (
-    <form>
+    <form className="task-form">
       <StoriesSelect onChange={onInputChange} value={task.storyId ?? ""} />
       <TextInput
         name="taskName"

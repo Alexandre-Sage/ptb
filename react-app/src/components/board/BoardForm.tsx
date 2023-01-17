@@ -5,20 +5,17 @@ import { Event } from "../../types/react/event.type";
 import { MainButton } from "../shared/buttons/MainButton";
 import { TextArea } from "../shared/inputs/TextArea";
 import { TextInput } from "../shared/inputs/TextInput";
-
+import "../../scss/form/boardForm.scss";
 export const BoardForm = ({ boardId }: { boardId?: BoardId }) => {
   const [board, getBoardFromServer, setBoard] = useBoard(boardId);
-  const [newBoard, setNewBoard] = useState<Board>({} as Board);
-  console.log({ newBoard });
   const onInputChange = ({ target: { value, name } }: Event) => {
     setBoard((board) => ({
       ...structuredClone(board),
       [name]: value,
     }));
   };
-  console.log(newBoard);
   return (
-    <form>
+    <form className="board-form">
       <TextInput
         label="Board name"
         name="boardName"

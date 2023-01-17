@@ -7,20 +7,8 @@ import { joiValidationPartialApplication } from "../modules/validation/joiHigher
 import { StoryId } from "../types/story/story.type";
 import { Task, TaskId, TaskRow } from "../types/task/task.type";
 import { UserId } from "../types/user/user.type";
+import { taskJoiValidationSchema } from "../validationSchema/task";
 
-export const taskJoiValidationSchema = Joi.object<Task>({
-  userId: Joi.not(),
-  comments: Joi.not(),
-  createdBy: Joi.string().required(),
-  creationDate: Joi.date().required(),
-  description: Joi.string().optional(),
-  editionDate: Joi.date().required(),
-  id: Joi.string().required(),
-  lastUpdate: Joi.date().required(),
-  storyId: Joi.string().required(),
-  taskName: Joi.string().required(),
-  status: Joi.string().required(),
-});
 export class TaskService {
   constructor(
     private readonly repository: Repository<Task, TaskRow, TaskCustomMethods>

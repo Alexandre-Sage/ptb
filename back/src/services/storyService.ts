@@ -21,8 +21,7 @@ export class StoryService {
       id: randomUUID(),
       creationDate: now,
       editionDate: now,
-      finished: false,
-      finishedDate: null,
+      status: "TO_DO",
       lastUpdate: now,
     };
     return composeHigherOrderAsync({
