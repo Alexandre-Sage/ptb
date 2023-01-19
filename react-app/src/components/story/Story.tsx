@@ -1,24 +1,34 @@
 import { title } from "process";
 import React, { ReactNode } from "react";
+import { DndContext, useDroppable } from "@dnd-kit/core";
 import { useFullStory } from "../../api/storyApi";
 import { serverDateToLocalString } from "../../modules/date";
 import { StoryId } from "../../types/story/story.type";
 import { Status } from "../../types/task/task.type";
 import { SecondaryButton } from "../shared/buttons/SecondaryButton";
 import { TaskCard } from "../task/Task";
+import "../../scss/story/story.scss";
+
+import "../../scss/story/story.scss";
+
 export const StorySection = ({
   tasks,
-  title,
+  id,
 }: {
   tasks: ReactNode;
-  title: Status;
+  id: Status;
 }) => {
+  const { isOver, setNodeRef } = useDroppable({
+    id,
+  });
   return (
-    <section className="story-section-container">
+    <section id={id} className="story-section-container">
       <header>
-        <h3>{title.toLowerCase().split("_").join("")}</h3>
+        <h3>{id.toLowerCase().split("_").join("")}</h3>
       </header>
-      <main>{tasks}</main>
+      <main className="story-section-container" ref={setNodeRef}>
+        {tasks}
+      </main>
     </section>
   );
 };
@@ -46,11 +56,13 @@ export const Story = ({ storyId }: { storyId: StoryId }) => {
         <p>{serverDateToLocalString(story.creationDate)}</p>
         <SecondaryButton text="Edit" />
       </header>
-      <main>
-        <StorySection tasks={toDoTasksJsx} title="TO_DO" />
-        <StorySection tasks={inProgressTasksJsx} title="IN_PROGRESS" />
-        <StorySection tasks={finishedTasksJsx} title="FINISHED" />
+      {/* <DndContext onDragStart={() => console.log("drag")}> */}
+      <main className="story-main">
+        <StorySection tasks={toDoTasksJsx} id="TO_DO" />
+        <StorySection tasks={inProgressTasksJsx} id="IN_PROGRESS" />
+        <StorySection tasks={finishedTasksJsx} id="FINISHED" />
       </main>
+      {/* </DndContext> */}
     </section>
   );
 };
