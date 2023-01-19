@@ -14,6 +14,7 @@ class HttpHeaders {
     Authorization: `Bearer ${this.token}`,
   });
 }
+type FetchMethod = "GET" | "POST" | "PUT" | "DELETE";
 class HttpFetch {
   public response: any = {} as any;
   constructor(
@@ -33,8 +34,6 @@ class HttpFetch {
     return this.response;
   };
 }
-
-type FetchMethod = "GET" | "POST" | "PUT" | "DELETE";
 const initFetch = async (
   headers: HttpHeaders,
   { body, method, url }: { url: string; body?: any; method: FetchMethod }

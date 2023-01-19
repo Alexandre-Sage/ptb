@@ -1,4 +1,5 @@
 import { BoardId } from "../board/Board.type";
+import { Status } from "../task/task.type";
 import { UserId } from "../user/user.type";
 
 export type StoryId = string;
@@ -9,8 +10,7 @@ export interface Story {
   creationDate: Date;
   userId: UserId;
   lastUpdate: Date;
-  finished: boolean;
-  finishedDate: Date | null;
+  status: Status;
   editionDate: Date;
   description: string;
 }

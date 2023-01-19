@@ -1,11 +1,11 @@
 import { useRef, useEffect } from "react";
-import Draggable from "react-draggable";
+import { Draggable } from "react-beautiful-dnd";
 import { useTask, updateTask } from "../../api/taskApi";
 import { serverDateToLocalString } from "../../modules/date";
 import { Event } from "../../types/react/event.type";
 import { Task, Status } from "../../types/task/task.type";
 import { StatusSelect } from "../shared/inputs/select/StatusSelect";
-
+import "../../scss/task/taskCard.scss";
 export const TaskCard = ({
   task: currentTask,
   updateStory,
@@ -30,16 +30,18 @@ export const TaskCard = ({
     if (updateStory) updateStory();
   };
   return (
-    <Draggable nodeRef={Ref}>
+    <Draggable>
       <section ref={Ref} className="task-container">
         <header>
           <h4>{task.taskName}</h4>
-          <StatusSelect
-            label="Status"
-            value={task.status || ""}
-            style={{ width: "7rem" }}
-            onChange={onStatusChange}
-          />
+          <div>
+            <StatusSelect
+              label="Status"
+              value={task.status || ""}
+              style={{ width: "5rem", height: "1.5rem" }}
+              onChange={onStatusChange}
+            />
+          </div>
         </header>
         <main>
           <p>{serverDateToLocalString(task.creationDate)}</p>

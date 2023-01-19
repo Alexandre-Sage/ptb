@@ -1,14 +1,13 @@
 import { deleteTask, useTasks } from "../../../api/taskApi";
-import { TaskId } from "../../../types/task/task.type";
+import { Status, TaskId } from "../../../types/task/task.type";
 import { Dashboard, DashboardData } from "../../shared/Dashboard";
 import { TaskForm } from "../../task/TaskForm";
-
 export const TaskDashboard = () => {
   const [tasks, updateTasks] = useTasks();
   const dashboardData: DashboardData[] = tasks.map((task) => ({
     id: task.id,
     name: task.taskName,
-    editionDate: task.editionDate,
+    status: task.status,
     creationDate: task.creationDate,
   }));
   const onDeleteTask = async (taskId: TaskId) => {
