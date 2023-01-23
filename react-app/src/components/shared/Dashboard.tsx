@@ -15,6 +15,8 @@ import {
 } from "react-router-dom";
 import "../../scss/dashboard/dashboard.scss";
 import { Modal, useModal } from "./modal/Modal";
+import { Status } from "../../types/task/task.type";
+import { getStatus } from "../../modules/getStatus";
 export interface DashboardProps {
   title: string;
   buttonText: string;
@@ -33,7 +35,7 @@ export interface DashboardProps {
 export interface DashboardData {
   name: string;
   creationDate: string | Date;
-  editionDate: string | Date;
+  status: Status;
   id: string;
 }
 
@@ -68,7 +70,7 @@ export const Dashboard = ({
         <h4>{data.name}</h4>
       )}
       <p>Creation: {serverDateToLocalString(data.creationDate)}</p>
-      <p>Last Update: {serverDateToLocalString(data.editionDate)}</p>
+      <p>Stage: {getStatus(data.status)}</p>
       <div className="dashboard-action-container">
         {deleteFunction ? (
           <SecondaryButton

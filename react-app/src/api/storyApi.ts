@@ -48,20 +48,11 @@ export class StoryApi extends CrudAPI<Story, StoryId> {
     });
   };
   getFullStory = async (storyId: StoryId) => {
-    const story = await this.getDataById(storyId);
+    const { story } = await this.getDataById(storyId);
     const { tasks } = await this.taskApi.getTaskByStoryId(storyId);
-    const toDoTasks = tasks.filter((task: Task) => task.status === "TO_DO");
-    const inProgressTasks = tasks.filter(
-      (task: Task) => task.status === "IN_PROGRESS"
-    );
-    const finishedTasks = tasks.filter(
-      (task: Task) => task.status === "FINISHED"
-    );
     return {
       story,
-      toDoTasks,
-      inProgressTasks,
-      finishedTasks,
+      tasks,
     };
   };
   useFullStory = (storyId: StoryId) => {

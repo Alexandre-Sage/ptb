@@ -18,7 +18,7 @@ export const BoardDashboard = () => {
   const dashboardData: DashboardData[] = boards.map((board) => ({
     name: board.boardName,
     creationDate: board.creationDate,
-    editionDate: board.editionDate,
+    status: board.status,
     id: board.id,
   }));
   return (

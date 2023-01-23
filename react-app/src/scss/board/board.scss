@@ -1,0 +1,14 @@
+@import "../main.scss";
+
+.board-section {
+  @include dev-border(yellow);
+  width: 100%;
+
+  .board-header {
+    @include dev-border(white);
+
+    h1 {}
+  }
+
+  .board-main {}
+}

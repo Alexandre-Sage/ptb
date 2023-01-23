@@ -12,7 +12,7 @@ export const StoryDashboard = () => {
   const dashboardData: DashboardData[] = stories.map((story) => ({
     name: story.storyName,
     creationDate: story.creationDate,
-    editionDate: story.editionDate,
+    status: story.status,
     id: story.id,
   }));
   return (

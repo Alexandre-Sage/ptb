@@ -1,3 +1,4 @@
+import { Status } from "../task/task.type";
 import { UserId } from "../user/user.type";
 export type BoardId = string;
 export interface Board {
@@ -5,8 +6,7 @@ export interface Board {
   boardName: string;
   creationDate: Date;
   editionDate: Date;
-  finished: boolean | number;
-  finishedDate: Date | null;
+  status: Status;
   lastUpdate: Date;
   userId: UserId;
   description: string;
