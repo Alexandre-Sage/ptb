@@ -1,14 +1,18 @@
 @import "../main.scss";
 
 .board-section {
-  @include dev-border(yellow);
+  //@include dev-border(yellow);
   width: 100%;
 
+  @include flex-column-full-centered;
+
   .board-header {
-    @include dev-border(white);
+    width: 100%;
 
     h1 {}
   }
 
-  .board-main {}
+  .board-main {
+    width: 95%;
+  }
 }

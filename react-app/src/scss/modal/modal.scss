@@ -9,7 +9,7 @@
   width: 100%;
   background-color: $bgColorLight;
   display: flex;
-  z-index: 999;
+  z-index: 9999;
 
   @include flex-column-full-centered;
 

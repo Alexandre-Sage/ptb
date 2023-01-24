@@ -1,38 +1,19 @@
-import { title } from "process";
-import React, { ReactNode } from "react";
-import { DndContext, useDroppable } from "@dnd-kit/core";
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import React, { useState } from "react";
 import { useFullStory } from "../../api/storyApi";
-import { serverDateToLocalString } from "../../modules/date";
-import { getStatus, getStatusFromStoryId } from "../../modules/getStatus";
-import { StoryId } from "../../types/story/story.type";
-import { Status, Task } from "../../types/task/task.type";
-import { SecondaryButton } from "../shared/buttons/SecondaryButton";
-import { TaskCard } from "../task/Task";
-import "../../scss/story/story.scss";
-
-import "../../scss/story/story.scss";
 import { updateTask } from "../../api/taskApi";
+import { getStatus, getStatusFromStoryId } from "../../modules/getStatus";
+import "../../scss/story/story.scss";
+import { StoryId } from "../../types/story/story.type";
+import { SecondaryButton } from "../shared/buttons/SecondaryButton";
+import { Modal, useModal } from "../shared/modal/Modal";
+import { TaskForm } from "../task/TaskForm";
+import { StoryForm } from "./StoryForm";
+import { StorySection } from "./StorySection";
 
-export const StorySection = ({ tasks, id }: { tasks: Task[]; id: string }) => {
-  const { isOver, setNodeRef } = useDroppable({
-    id,
-  });
-  return (
-    <section ref={setNodeRef} id={id} className="story-section-container">
-      <header>
-        <h3>{getStatus(id.split("-")[0])}</h3>
-      </header>
-      <main className="story-section-main" ref={setNodeRef}>
-        {tasks
-          .filter((task) => task.status === id.split("-")[0])
-          .map((task) => (
-            <TaskCard task={task} key={task.id} />
-          ))}
-      </main>
-    </section>
-  );
-};
 export const Story = ({ storyId }: { storyId: StoryId }) => {
+  const { toggleModal, setModal } = useModal();
+  const [toggleTaskForm, setTaskForm] = useState<boolean>(false);
   const {
     setStory,
     story: { story: currentStory, tasks },
@@ -40,39 +21,46 @@ export const Story = ({ storyId }: { storyId: StoryId }) => {
   } = useFullStory(storyId);
   console.log(currentStory);
   if (!currentStory || !tasks) return <div>Loading...</div>;
+  const onDrag = ({ active: { id }, over }: DragEndEvent) => {
+    const activeTask = tasks.find((task) => task.id === id);
+    if (!activeTask || !over?.id) return;
+    updateTask({
+      ...activeTask,
+      status: getStatusFromStoryId(over?.id as string),
+    });
+    updateStory();
+  };
   return (
-    <section className="story">
-      <header className="story-header">
-        <h2
-          className="story-title"
-          style={{
-            border: "1px solid red",
-            height: 50,
-          }}
-        >
-          {currentStory.storyName}
-        </h2>
-        <p>{serverDateToLocalString(currentStory.creationDate)}</p>
-        <SecondaryButton text="Edit" />
-      </header>
-      <main className="story-main">
-        <DndContext
-          onDragStart={() => console.log("drag")}
-          onDragEnd={({ active: { id }, over }) => {
-            const activeTask = tasks.find((task) => task.id === id);
-            if (!activeTask || !over?.id) return;
-            updateTask({
-              ...activeTask,
-              status: getStatusFromStoryId(over?.id as string),
-            });
-            updateStory();
-          }}
-        >
-          <StorySection tasks={tasks} id={`TO_DO-${storyId}`} />
-          <StorySection tasks={tasks} id={`IN_PROGRESS-${storyId}`} />
-          <StorySection tasks={tasks} id={`FINISHED-${storyId}`} />
-        </DndContext>
-      </main>
-    </section>
+    <React.Fragment>
+      <section className="story">
+        <header className="story-header">
+          <h2 className="story-title">{currentStory.storyName}</h2>
+          <p>Status: {getStatus(currentStory.status)}</p>
+          <div className="actions-container">
+            <SecondaryButton
+              text="Edit"
+              onClick={() => setModal((prev) => !prev)}
+            />
+            <SecondaryButton
+              text="Add task"
+              onClick={() => setTaskForm((prev) => !prev)}
+            />
+          </div>
+        </header>
+        <main className="story-main">
+          <DndContext onDragEnd={onDrag}>
+            <StorySection tasks={tasks} id={`TO_DO-${storyId}`} />
+            <StorySection tasks={tasks} id={`IN_PROGRESS-${storyId}`} />
+            <StorySection tasks={tasks} id={`FINISHED-${storyId}`} />
+          </DndContext>
+        </main>
+      </section>
+      <Modal setModal={setModal} toggleModal={toggleModal}>
+        <StoryForm storyId={storyId} />
+      </Modal>
+      <Modal setModal={setTaskForm} toggleModal={toggleTaskForm}>
+        <TaskForm storyId={storyId} update={updateStory} />
+      </Modal>
+    </React.Fragment>
   );
 };

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { finished } from "stream";
 import { Board, BoardId } from "../types/board/Board.type";
 import { NewBoardData } from "../types/board/NewBoard.type";
 import { ReactSetState } from "../types/react/ReactState.type";
@@ -38,7 +37,6 @@ class BoardApi extends CrudAPI<Board, BoardId> {
       const response = await this.getDataById(boardId);
       setBoard({
         ...response.board,
-        finished: response.board.finished === 0 ? false : true,
       });
     };
     if (boardId) {

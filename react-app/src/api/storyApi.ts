@@ -31,7 +31,6 @@ export class StoryApi extends CrudAPI<Story, StoryId> {
       const response = await this.getDataById(storyId);
       setStory({
         ...response.story,
-        finished: response.story.finished === 0 ? false : true,
       });
     };
     if (storyId) {

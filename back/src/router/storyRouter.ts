@@ -72,6 +72,8 @@ export class StoryRouter {
           error: false,
         });
       } catch (error) {
+        console.log({ debug: error });
+
         res.status(500).json({
           error: true,
           message: "Something went wrong please retry",

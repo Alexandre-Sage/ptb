@@ -5,7 +5,7 @@ import { StoryDashboard } from "./dashboard/StoryDashBoard";
 import { TaskDashboard } from "./dashboard/TaskDashBoard";
 export const User = () => {
   const [user, setUser] = useUserData();
-
+  if (!user) return <div>Loading...</div>;
   return (
     <div className="user-main-container">
       <header className="user-header">
