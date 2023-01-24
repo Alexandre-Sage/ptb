@@ -19,6 +19,7 @@ import { taskRepository } from "./src/mariaDb/repositories/taskRepository";
 import { TaskRouter } from "./src/router/taskRouter";
 import { TaskService } from "./src/services/taskService";
 import morgan from "morgan";
+import path from "path";
 
 export class TaskBoardServer {
   serverInstance = express();
@@ -45,6 +46,10 @@ export class TaskBoardServer {
     this.serverInstance.use("/boards", boardRouter);
     this.serverInstance.use("/stories", storyRouter);
     this.serverInstance.use("/tasks", taskRouter);
+    this.serverInstance.get("/", (req, res) => {
+      this.serverInstance.use(express.static(path.join(__dirname, "build")));
+      res.sendFile(path.join(__dirname, "build", "index.html"));
+    });
   };
   initOptionsAndRoutesHigerOrder = composeHigherOrder({
     firstToExecute: this.initServerOptions,
