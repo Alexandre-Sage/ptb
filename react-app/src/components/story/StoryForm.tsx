@@ -6,19 +6,31 @@ import { BoardSelect } from "../shared/inputs/select/BoardsSelect";
 import { TextArea } from "../shared/inputs/TextArea";
 import { TextInput } from "../shared/inputs/TextInput";
 import "../../scss/form/storyForm.scss";
+import { BoardId } from "../../types/board/Board.type";
+import { useEffect } from "react";
 export interface StoryFormProps {
   storyId?: StoryId;
+  boardId?: BoardId;
+  update?: () => any;
 }
 
-export const StoryForm = ({ storyId }: StoryFormProps) => {
+export const StoryForm = ({ storyId, boardId, update }: StoryFormProps) => {
   const [story, updateStoryData, setStory] = useStory(storyId);
   const onInputChange = ({
     /* currentTarget: { value, name }, */ target: { value, name },
-  }: Event) =>
+  }: Event) => {
     setStory((story) => ({
       ...structuredClone(story),
       [name]: value,
     }));
+  };
+  useEffect(() => {
+    if (boardId)
+      setStory((story) => ({
+        ...story,
+        boardId,
+      }));
+  }, []);
   return (
     <form className="story-form">
       <BoardSelect
@@ -46,6 +58,7 @@ export const StoryForm = ({ storyId }: StoryFormProps) => {
           event.preventDefault();
           if (storyId) await updateStory(story);
           else await postStory(story);
+          if (update) update();
         }}
       />
     </form>

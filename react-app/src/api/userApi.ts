@@ -21,7 +21,7 @@ const login = async (credentials: LoginData) => {
     return false;
   }
   sessionStorage.jwt = data.token;
-  return true;
+  return data.token;
   //return redirect("http://localhost:3000/user");
 };
 
@@ -38,7 +38,6 @@ const postNewUser = async (userData: SignUpData) => {
 
 const useUserData = (): [User, () => void] => {
   const [userData, setUserData] = useState<User>({} as User);
-  const token = sessionStorage.jwt;
   const updateUserData = async () => {
     const response = await functionalFetch({
       method: "GET",

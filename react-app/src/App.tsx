@@ -17,7 +17,10 @@ export const App = () => {
   const authentification = async () => {
     const auth = await login(loginData);
     console.log(auth);
-    if (auth === true) setAuth((prev) => !prev);
+    sessionStorage.jwt = auth;
+    setTimeout(() => {
+      if (auth) setAuth((prev) => !prev);
+    }, 1000);
   };
   return (
     <div className="landing-page">

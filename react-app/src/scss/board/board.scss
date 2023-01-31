@@ -1,18 +1,26 @@
 @import "../main.scss";
 
 .board-section {
-  //@include dev-border(yellow);
   width: 100%;
+  min-height: 95vh;
 
-  @include flex-column-full-centered;
+  //@include flex-column-full-centered;
 
   .board-header {
     width: 100%;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
 
-    h1 {}
+    h1 {
+      margin: 1rem;
+    }
   }
 
   .board-main {
-    width: 95%;
+    width: 100%;
+    overflow-y: scroll;
+    height: 85vh;
   }
 }
