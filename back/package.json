@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha  --config '.mocharc.json'  --loader=ts-node/esm './test/main.test.ts' --watch"
+    "test": "mocha  --config '.mocharc.json'  --loader=ts-node/esm './test/main.test.ts' --watch",
+    "prod": "pm2  start --interpreter ~/ts-node/dist/bin-esm.js  server.ts --name ptb"
   },
   "keywords": [],
   "author": "",
