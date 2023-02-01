@@ -25,7 +25,7 @@ class HttpFetch {
   ) {}
   fetch = async () => {
     const { method, url, headers, body } = this;
-    const request = await fetch(`http://localhost:4666${url}`, {
+    const request = await fetch(`https://185.170.214.142:4666${url}`, {
       method,
       headers: headers.getHeaders(),
       body: JSON.stringify(structuredClone(body)),
